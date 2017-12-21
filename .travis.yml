@@ -28,4 +28,4 @@ branches:
     - develop
 env:
  global:
-  - gh_repo: git@github.com:CheLun-iOS/CheLun-iOS.github.io.git
+  - gh_repo: github.com/CheLun-iOS/CheLun-iOS.github.io.git

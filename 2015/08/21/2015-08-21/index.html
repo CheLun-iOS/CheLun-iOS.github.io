@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>那些年我们用过的第三方库 | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="SnapKit（Masonry） 的使用 - 杨志平
+这两个库的用法都是差不多的，只是由两个不同的人来主导开源  SnapKit是Swift版 Masonry是OC版    
+自动布局及交互式编程是iOS开发的趋势，同时Swift也会在不久将来替换OC语言。所以现在的iOS开发者可以开始学习Swift2.0 以及应用 Autolayout 来编程
+
+代码对比（概况了解）开始前OC原生布局代码123">
+<meta property="og:type" content="article">
+<meta property="og:title" content="那些年我们用过的第三方库">
+<meta property="og:url" content="http://yoursite.com/2015/08/21/2015-08-21/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="SnapKit（Masonry） 的使用 - 杨志平
+这两个库的用法都是差不多的，只是由两个不同的人来主导开源  SnapKit是Swift版 Masonry是OC版    
+自动布局及交互式编程是iOS开发的趋势，同时Swift也会在不久将来替换OC语言。所以现在的iOS开发者可以开始学习Swift2.0 以及应用 Autolayout 来编程
+
+代码对比（概况了解）开始前OC原生布局代码123">
+<meta property="og:image" content="https://cloud.githubusercontent.com/assets/9360037/9401926/1e572316-4809-11e5-9a96-430e688cda85.png">
+<meta property="og:updated_time" content="2016-09-09T02:39:09.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="那些年我们用过的第三方库">
+<meta name="twitter:description" content="SnapKit（Masonry） 的使用 - 杨志平
+这两个库的用法都是差不多的，只是由两个不同的人来主导开源  SnapKit是Swift版 Masonry是OC版    
+自动布局及交互式编程是iOS开发的趋势，同时Swift也会在不久将来替换OC语言。所以现在的iOS开发者可以开始学习Swift2.0 以及应用 Autolayout 来编程
+
+代码对比（概况了解）开始前OC原生布局代码123">
+<meta name="twitter:image" content="https://cloud.githubusercontent.com/assets/9360037/9401926/1e572316-4809-11e5-9a96-430e688cda85.png">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-2015-08-21" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2015/08/21/2015-08-21/" class="article-date">
+  <time datetime="2015-08-21T04:00:00.000Z" itemprop="datePublished">2015-08-21</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      那些年我们用过的第三方库
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="SnapKit（Masonry）-的使用-杨志平"><a href="#SnapKit（Masonry）-的使用-杨志平" class="headerlink" title="SnapKit（Masonry） 的使用 - 杨志平"></a>SnapKit（Masonry） 的使用 - 杨志平</h2><blockquote>
+<p>这两个库的用法都是差不多的，只是由两个不同的人来主导开源  <br><br><strong><a href="https://github.com/SnapKit/SnapKit" target="_blank" rel="external">SnapKit</a></strong>是Swift版 <br><br><strong><a href="https://github.com/SnapKit/Masonry" target="_blank" rel="external">Masonry</a></strong>是OC版    </p>
+<p>自动布局及交互式编程是iOS开发的趋势，同时Swift也会在不久将来替换OC语言。所以现在的iOS开发者可以开始学习Swift2.0 以及应用 Autolayout 来编程</p>
+</blockquote>
+<h3 id="代码对比（概况了解）"><a href="#代码对比（概况了解）" class="headerlink" title="代码对比（概况了解）"></a>代码对比（概况了解）</h3><h5 id="开始前OC原生布局代码"><a href="#开始前OC原生布局代码" class="headerlink" title="开始前OC原生布局代码"></a>开始前OC原生布局代码</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">UIView *superview = self;</div><div class="line"></div><div class="line">UIView *view1 = [[UIView alloc] init];</div><div class="line">view1.translatesAutoresizingMaskIntoConstraints = NO;</div><div class="line">view1.backgroundColor = [UIColor greenColor];</div><div class="line">[superview addSubview:view1];</div><div class="line"></div><div class="line">UIEdgeInsets padding = UIEdgeInsetsMake(10, 10, 10, 10);</div><div class="line"></div><div class="line">[superview addConstraints:@[</div><div class="line"></div><div class="line">   //view1 constraints</div><div class="line">   [NSLayoutConstraint constraintWithItem:view1</div><div class="line">                                attribute:NSLayoutAttributeTop</div><div class="line">                                relatedBy:NSLayoutRelationEqual</div><div class="line">                                   toItem:superview</div><div class="line">                                attribute:NSLayoutAttributeTop</div><div class="line">                               multiplier:1.0</div><div class="line">                                 constant:padding.top],</div><div class="line"></div><div class="line">   [NSLayoutConstraint constraintWithItem:view1</div><div class="line">                                attribute:NSLayoutAttributeLeft</div><div class="line">                                relatedBy:NSLayoutRelationEqual</div><div class="line">                                   toItem:superview</div><div class="line">                                attribute:NSLayoutAttributeLeft</div><div class="line">                               multiplier:1.0</div><div class="line">                                 constant:padding.left],</div><div class="line"></div><div class="line">   [NSLayoutConstraint constraintWithItem:view1</div><div class="line">                                attribute:NSLayoutAttributeBottom</div><div class="line">                                relatedBy:NSLayoutRelationEqual</div><div class="line">                                   toItem:superview</div><div class="line">                                attribute:NSLayoutAttributeBottom</div><div class="line">                               multiplier:1.0</div><div class="line">                                 constant:-padding.bottom],</div><div class="line"></div><div class="line">   [NSLayoutConstraint constraintWithItem:view1</div><div class="line">                                attribute:NSLayoutAttributeRight</div><div class="line">                                relatedBy:NSLayoutRelationEqual</div><div class="line">                                   toItem:superview</div><div class="line">                                attribute:NSLayoutAttributeRight</div><div class="line">                               multiplier:1</div><div class="line">                                 constant:-padding.right],</div><div class="line">	]];</div></pre></td></tr></table></figure>
+<h5 id="使用Masonry"><a href="#使用Masonry" class="headerlink" title="使用Masonry"></a>使用Masonry</h5><p>精简</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">UIEdgeInsets padding = UIEdgeInsetsMake(10, 10, 10, 10);</div><div class="line"></div><div class="line">[view1 mas_makeConstraints:^(MASConstraintMaker *make) &#123;</div><div class="line">   make.top.equalTo(superview.mas_top).with.offset(padding.top); //with 	is an optional semantic filler</div><div class="line">	make.left.equalTo(superview.mas_left).with.offset(padding.left);</div><div class="line">	make.bottom.equalTo(superview.mas_bottom).with.offset(-	padding.bottom);</div><div class="line">	make.right.equalTo(superview.mas_right).with.offset(-padding.right);</div><div class="line">&#125;];</div></pre></td></tr></table></figure>
+<p>更加精简</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">[view1 mas_makeConstraints:^(MASConstraintMaker *make) &#123;</div><div class="line"> 	 	 make.edges.equalTo(superview).with.insets(padding);</div><div class="line">&#125;];</div></pre></td></tr></table></figure>
+<h5 id="同理使用SnapKit"><a href="#同理使用SnapKit" class="headerlink" title="同理使用SnapKit"></a>同理使用SnapKit</h5><p>精简</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">let box = UIView()</div><div class="line">superview.addSubview(box)</div><div class="line"></div><div class="line">box.snp_makeConstraints &#123; (make) -&gt; Void in</div><div class="line">	make.top.equalTo(superview).offset(20)</div><div class="line">	make.left.equalTo(superview).offset(20)</div><div class="line">	make.bottom.equalTo(superview).offset(-20)</div><div class="line">   	make.right.equalTo(superview).offset(-20)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>更加精简</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">box.snp_makeConstraints &#123; (make) -&gt; Void in</div><div class="line">   	make.edges.equalTo(superview).inset(UIEdgeInsetsMake(20, 20, 20, 20))</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="如何使用-amp-amp-原理"><a href="#如何使用-amp-amp-原理" class="headerlink" title="如何使用 &amp;&amp; 原理"></a>如何使用 &amp;&amp; 原理</h3><h4 id="常见的约束类型对比"><a href="#常见的约束类型对比" class="headerlink" title="常见的约束类型对比"></a>常见的约束类型对比</h4><table>
+<thead>
+<tr>
+<th>ViewAttribute</th>
+<th>NSLayoutAttribute</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>view.snp_left</td>
+<td>NSLayoutAttribute.Left</td>
+</tr>
+<tr>
+<td>view.snp_right</td>
+<td>NSLayoutAttribute.Right</td>
+</tr>
+<tr>
+<td>view.snp_top</td>
+<td>NSLayoutAttribute.Top</td>
+</tr>
+<tr>
+<td>view.snp_bottom</td>
+<td>NSLayoutAttribute.Bottom</td>
+</tr>
+<tr>
+<td>view.snp_leading</td>
+<td>NSLayoutAttribute.Leading</td>
+</tr>
+<tr>
+<td>view.snp_trailing</td>
+<td>NSLayoutAttribute.Trailing</td>
+</tr>
+<tr>
+<td>view.snp_width</td>
+<td>NSLayoutAttribute.Width</td>
+</tr>
+<tr>
+<td>view.snp_height</td>
+<td>NSLayoutAttribute.Height</td>
+</tr>
+<tr>
+<td>view.snp_centerX</td>
+<td>NSLayoutAttribute.CenterX</td>
+</tr>
+<tr>
+<td>view.snp_centerY</td>
+<td>NSLayoutAttribute.CenterY</td>
+</tr>
+<tr>
+<td>view.snp_baseline</td>
+<td>NSLayoutAttribute.Baseline</td>
+</tr>
+</tbody>
+</table>
+<h4 id="常见的用法"><a href="#常见的用法" class="headerlink" title="常见的用法"></a>常见的用法</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">make.top.equalTo(42)</div><div class="line">make.lessThanOrEqualTo.equalTo(SuperView)</div><div class="line">make.top.equalTo(SuperView)</div><div class="line">make.size.equalTo(CGSizeMake(50, 100))</div><div class="line">make.edges.equalTo(UIEdgeInsetsMake(10, 0, 10, 0))</div><div class="line">make.left.equalTo(view).offset(UIEdgeInsetsMake(10, 0, 10, 0))</div><div class="line"></div><div class="line">make.height.equalTo(OtherView).offset(10)</div><div class="line">make.trailing.equalTo(OtherView.snp_trailing).offset(10)</div><div class="line">make.bottom.equalTo(-20).priority(250)</div></pre></td></tr></table></figure>
+<h4 id="对比交互式编程的约束布局"><a href="#对比交互式编程的约束布局" class="headerlink" title="对比交互式编程的约束布局"></a>对比交互式编程的约束布局</h4><p><img src="https://cloud.githubusercontent.com/assets/9360037/9401926/1e572316-4809-11e5-9a96-430e688cda85.png" alt="image"></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2015/08/21/2015-08-21/" data-id="cizay9ggy000sed66001qsl1o" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2015/09/14/2015-09-11/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          浅拷贝与深拷贝
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2015/07/26/2015-07-26/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">[上海] Android 小伙伴一起来 51offer 玩吧</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Mobile/">Mobile</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/UI/">UI</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/tools/">tools</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/移动组周技术分享/">移动组周技术分享</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Accelerate/">Accelerate</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Fight/">Fight</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Injury/">Injury</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Playground/">Playground</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Shocking/">Shocking</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TouchID/">TouchID</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Universal-Links/">Universal Links</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/blog-tools-ci/">blog, tools, ci</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/defer/">defer</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/document/">document</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/guard/">guard</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/javaScript/">javaScript</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/lazy/">lazy</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/phython/">phython</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/shell/">shell</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/博客/">博客</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/同步异步/">同步异步</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/开发效率/">开发效率</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/效率/">效率</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/游戏/">游戏</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/物理引擎/">物理引擎</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/研发杂谈/">研发杂谈</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/线程/">线程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/网站/">网站</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/通用链接/">通用链接</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Accelerate/" style="font-size: 10px;">Accelerate</a> <a href="/tags/Fight/" style="font-size: 10px;">Fight</a> <a href="/tags/Injury/" style="font-size: 10px;">Injury</a> <a href="/tags/Playground/" style="font-size: 10px;">Playground</a> <a href="/tags/Shocking/" style="font-size: 10px;">Shocking</a> <a href="/tags/TouchID/" style="font-size: 10px;">TouchID</a> <a href="/tags/Universal-Links/" style="font-size: 10px;">Universal Links</a> <a href="/tags/blog-tools-ci/" style="font-size: 10px;">blog, tools, ci</a> <a href="/tags/defer/" style="font-size: 10px;">defer</a> <a href="/tags/document/" style="font-size: 10px;">document</a> <a href="/tags/guard/" style="font-size: 10px;">guard</a> <a href="/tags/javaScript/" style="font-size: 10px;">javaScript</a> <a href="/tags/lazy/" style="font-size: 10px;">lazy</a> <a href="/tags/phython/" style="font-size: 10px;">phython</a> <a href="/tags/shell/" style="font-size: 10px;">shell</a> <a href="/tags/博客/" style="font-size: 10px;">博客</a> <a href="/tags/同步异步/" style="font-size: 10px;">同步异步</a> <a href="/tags/开发效率/" style="font-size: 10px;">开发效率</a> <a href="/tags/效率/" style="font-size: 10px;">效率</a> <a href="/tags/游戏/" style="font-size: 10px;">游戏</a> <a href="/tags/物理引擎/" style="font-size: 10px;">物理引擎</a> <a href="/tags/研发杂谈/" style="font-size: 10px;">研发杂谈</a> <a href="/tags/线程/" style="font-size: 10px;">线程</a> <a href="/tags/网站/" style="font-size: 10px;">网站</a> <a href="/tags/通用链接/" style="font-size: 10px;">通用链接</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">July 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">June 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">April 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">March 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">February 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">December 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">November 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">October 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/09/">September 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">August 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/07/">July 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/06/">June 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">May 2015</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2016/07/29/2016-07-29/">通用链接（ Universal Links ）</a>
+          </li>
+        
+          <li>
+            <a href="/2016/07/22/2016-07-22/">移动周分享-第60期</a>
+          </li>
+        
+          <li>
+            <a href="/2016/06/17/2016-06-17/">Xcode MarkDown的代码文档 ( for swift )</a>
+          </li>
+        
+          <li>
+            <a href="/2016/05/06/2016-05-06/">枚举的特殊用法</a>
+          </li>
+        
+          <li>
+            <a href="/2016/04/22/2016-04-22/">Swift 的 Playground 学习</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2017 John Doe<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+  </div>
+</body>
+</html>

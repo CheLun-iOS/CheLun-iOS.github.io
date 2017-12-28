@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>车轮互联</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="iOS移动小组Swift化，在此开个博客😋">
+<meta property="og:type" content="website">
+<meta property="og:title" content="车轮互联">
+<meta property="og:url" content="http://yoursite.com/index.html">
+<meta property="og:site_name" content="车轮互联">
+<meta property="og:description" content="iOS移动小组Swift化，在此开个博客😋">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="车轮互联">
+<meta name="twitter:description" content="iOS移动小组Swift化，在此开个博客😋">
+  
+    <link rel="alternate" href="/atom.xml" title="车轮互联" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">车轮互联</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">有车就有车轮</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main">
+  
+    <article id="post-2017-12-28" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/12/28/2017-12-28/" class="article-date">
+  <time datetime="2017-12-28T16:04:29.000Z" itemprop="datePublished">2017-12-28</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/share/">share</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/12/28/2017-12-28/">第7期博客（查违章日志系统的接入NSLogger）</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="查违章日志系统的接入NSLogger"><a href="#查违章日志系统的接入NSLogger" class="headerlink" title="查违章日志系统的接入NSLogger"></a>查违章日志系统的接入NSLogger</h1><p>NSLogger是一款强力的日志记录和分析工具，其强大的功能，可以完全替代Xcode自带的Debugger，本文将介绍一些其主要特点和用法以及接入查违章的思路。<a href="https://github.com/fpillet/NSLogger" target="_blank" rel="external">github地址</a>.</p>
+<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><ul>
+<li>Step 1. 在Mac上下载并安装<a href="https://github.com/fpillet/NSLogger/releases" target="_blank" rel="external">NSLogger desktop viewer</a>.</li>
+<li>Step 2. 将NSLogger framework添加到工程中.</li>
+<li>Step 3. There is no step 3…</li>
+</ul>
+<h2 id="效果"><a href="#效果" class="headerlink" title="效果"></a>效果</h2><p><img src="Resources/统计事件log.png" alt=""><br><img src="Resources/adLog.png" alt=""><br><img src="Resources/networkLog.png" alt=""></p>
+<h2 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h2><p>NSLogger支持TCP和Bonjour两种方式连接终端设备，Bonjour连接一般不需要配置，如果要是使用TCP连接，要通过LoggerSetViewerHost()配置IP地址和端口（同时需配置NSLoggerViewer，在Preferences的Network中，勾选 “Listen for loggers on TCP port”打开监听）：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">LoggerSetViewerHost(NULL, (__bridge CFStringRef)@&quot;192.168.11.38&quot;, (UInt32)50000);</div></pre></td></tr></table></figure>
+<h2 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">#import &quot;NSLogger.h&quot;</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div></pre></td><td class="code"><pre><div class="line">#ifdef DEBUG</div><div class="line">    #define NSLog(...)                      LogMessageF(__FILE__, __LINE__, __FUNCTION__, @&quot;NSLog&quot;, 0, __VA_ARGS__)</div><div class="line">    #define LoggerError(level, ...)         LogMessageF(__FILE__, __LINE__, __FUNCTION__, @&quot;Error&quot;, level, __VA_ARGS__)</div><div class="line">    #define LoggerApp(level, ...)           LogMessageF(__FILE__, __LINE__, __FUNCTION__, @&quot;App&quot;, level, __VA_ARGS__)</div><div class="line">    #define LoggerView(level, ...)          LogMessageF(__FILE__, __LINE__, __FUNCTION__, @&quot;View&quot;, level, __VA_ARGS__)</div><div class="line">    #define LoggerService(level, ...)       LogMessageF(__FILE__, __LINE__, __FUNCTION__, @&quot;Service&quot;, level, __VA_ARGS__)</div><div class="line">    #define LoggerModel(level, ...)         LogMessageF(__FILE__, __LINE__, __FUNCTION__, @&quot;Model&quot;, level, __VA_ARGS__)</div><div class="line">    #define LoggerData(level, ...)          LogMessageF(__FILE__, __LINE__, __FUNCTION__, @&quot;Data&quot;, level, __VA_ARGS__)</div><div class="line">    #define LoggerNetwork(level, ...)       LogMessageF(__FILE__, __LINE__, __FUNCTION__, @&quot;Network&quot;, level, __VA_ARGS__)</div><div class="line">    #define LoggerLocation(level, ...)      LogMessageF(__FILE__, __LINE__, __FUNCTION__, @&quot;Location&quot;, level, __VA_ARGS__)</div><div class="line">    #define LoggerPush(level, ...)          LogMessageF(__FILE__, __LINE__, __FUNCTION__, @&quot;Push&quot;, level, __VA_ARGS__)</div><div class="line">    #define LoggerFile(level, ...)          LogMessageF(__FILE__, __LINE__, __FUNCTION__, @&quot;File&quot;, level, __VA_ARGS__)</div><div class="line">    #define LoggerSharing(level, ...)       LogMessageF(__FILE__, __LINE__, __FUNCTION__, @&quot;Sharing&quot;, level, __VA_ARGS__)</div><div class="line">    #define LoggerAd(level, ...)            LogMessageF(__FILE__, __LINE__, __FUNCTION__, @&quot;Ad and Stat&quot;, level, __VA_ARGS__)</div><div class="line"></div><div class="line">#else</div><div class="line">    #define NSLog(...)                      LogMessageCompat(__VA_ARGS__)</div><div class="line">    #define LoggerError(...)                while(0) &#123;&#125;</div><div class="line">    #define LoggerApp(level, ...)           while(0) &#123;&#125;</div><div class="line">    #define LoggerView(...)                 while(0) &#123;&#125;</div><div class="line">    #define LoggerService(...)              while(0) &#123;&#125;</div><div class="line">    #define LoggerModel(...)                while(0) &#123;&#125;</div><div class="line">    #define LoggerData(...)                 while(0) &#123;&#125;</div><div class="line">    #define LoggerNetwork(...)              while(0) &#123;&#125;</div><div class="line">    #define LoggerLocation(...)             while(0) &#123;&#125;</div><div class="line">    #define LoggerPush(...)                 while(0) &#123;&#125;</div><div class="line">    #define LoggerFile(...)                 while(0) &#123;&#125;</div><div class="line">    #define LoggerSharing(...)              while(0) &#123;&#125;</div><div class="line">    #define LoggerAd(...)                   while(0) &#123;&#125;</div><div class="line"></div><div class="line">#endif</div></pre></td></tr></table></figure>
+<p>##特点</p>
+<ul>
+<li>标签输出</li>
+<li>自定义优先级</li>
+<li>直接输出图片</li>
+<li>多线程标记</li>
+<li>时序控制</li>
+<li>远程记录</li>
+</ul>
+<p>##查违章是如何接入的</p>
+<p>1.该日志直接接入已有的BPLogger中，对比NSLogger.h中提供的宏定义，我们可以有符合我们项目的宏定义，对于Release下不输出日志，比如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line">#ifdef DEBUG</div><div class="line"></div><div class="line">#define BPLog(...)                      LogMessageF(__FILE__, __LINE__, __FUNCTION__, @&quot;Normol Log&quot;, 0, __VA_ARGS__)</div><div class="line">#define BPLoggerNetwork(...)            LogMessageF(__FILE__, __LINE__, __FUNCTION__, @&quot;NetWork Log&quot;, 0, __VA_ARGS__)</div><div class="line">#define BPLoggerAd(...)                 LogMessageF(__FILE__, __LINE__, __FUNCTION__, @&quot;AD Log&quot;, 0, __VA_ARGS__)</div><div class="line">#define BPLoggerEvent(...)              LogMessageF(__FILE__, __LINE__, __FUNCTION__, @&quot;Event Log&quot;, 0, __VA_ARGS__)</div><div class="line">#define BPLoggerCache(...)              LogMessageF(__FILE__, __LINE__, __FUNCTION__, @&quot;Cache Log&quot;, 0, __VA_ARGS__)</div><div class="line">#define BPLoggerSkipping(...)           LogMessageF(__FILE__, __LINE__, __FUNCTION__, @&quot;Skipping Log&quot;, 0, __VA_ARGS__)</div><div class="line">#define BPLoggerCWZSDK(...)             LogMessageF(__FILE__, __LINE__, __FUNCTION__, @&quot;Cwzsdk Dispatch Log&quot;, 0, __VA_ARGS__)</div><div class="line">#define BPLoggerCustom(CustomStr,...)   LogMessageF(__FILE__, __LINE__, __FUNCTION__, CustomStr, 0, __VA_ARGS__)</div><div class="line"></div><div class="line">#else</div><div class="line"></div><div class="line">#define BPLog(...)                      while(0) &#123;&#125;</div><div class="line">#define BPLoggerNetwork(...)            while(0) &#123;&#125;</div><div class="line">#define BPLoggerAd(level, ...)          while(0) &#123;&#125;</div><div class="line">#define BPLoggerEvent(...)              while(0) &#123;&#125;</div><div class="line">#define BPLoggerCache(...)              while(0) &#123;&#125;</div><div class="line">#define BPLoggerSkipping(...)           while(0) &#123;&#125;</div><div class="line">#define BPLoggerCWZSDK(...)             while(0) &#123;&#125;</div><div class="line">#define BPLoggerCustom(CustomStr,...)   while(0) &#123;&#125;</div><div class="line"></div><div class="line">#endif</div></pre></td></tr></table></figure>
+<p>2.由于日志系统可能会嵌入查违章的主工程和很多基础库中，比如CLAdsSDK，CLSafeKit，BPCommon等，正常的使用就是在最基础库中依赖NSLogger，但是这样会使项目对该工具的使用和剥离增加更多的人为操作，这并不是最好的解决方法，我们期望的是所有的基础库都不依赖NSLogger，如果需要这个功能，在主工程的podfile中pod ‘NSLogger’就行，就像一个”插件”那样，可以随意加入工程，也可以随时拿走，所以对BPLogger.h进行改造，比如这样：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div></pre></td><td class="code"><pre><div class="line">#if MainProjectMarco(一个在主工程的宏定义)</div><div class="line">#import &quot;LoggerClient.h&quot;</div><div class="line">#endif</div><div class="line"></div><div class="line">#if MainProjectMarco(一个在主工程的宏定义)</div><div class="line"></div><div class="line">#ifdef DEBUG</div><div class="line"></div><div class="line">#define BPLog(...)                      LogMessageF(__FILE__, __LINE__, __FUNCTION__, @&quot;Normol Log&quot;, 0, __VA_ARGS__)</div><div class="line">#define BPLoggerNetwork(...)            LogMessageF(__FILE__, __LINE__, __FUNCTION__, @&quot;NetWork Log&quot;, 0, __VA_ARGS__)</div><div class="line">#define BPLoggerAd(...)                 LogMessageF(__FILE__, __LINE__, __FUNCTION__, @&quot;AD Log&quot;, 0, __VA_ARGS__)</div><div class="line">#define BPLoggerEvent(...)              LogMessageF(__FILE__, __LINE__, __FUNCTION__, @&quot;Event Log&quot;, 0, __VA_ARGS__)</div><div class="line">#define BPLoggerCache(...)              LogMessageF(__FILE__, __LINE__, __FUNCTION__, @&quot;Cache Log&quot;, 0, __VA_ARGS__)</div><div class="line">#define BPLoggerSkipping(...)           LogMessageF(__FILE__, __LINE__, __FUNCTION__, @&quot;Skipping Log&quot;, 0, __VA_ARGS__)</div><div class="line">#define BPLoggerCWZSDK(...)             LogMessageF(__FILE__, __LINE__, __FUNCTION__, @&quot;Cwzsdk Dispatch Log&quot;, 0, __VA_ARGS__)</div><div class="line">#define BPLoggerCustom(CustomStr,...)   LogMessageF(__FILE__, __LINE__, __FUNCTION__, CustomStr, 0, __VA_ARGS__)</div><div class="line"></div><div class="line">#else</div><div class="line"></div><div class="line">#define BPLog(...)                      while(0) &#123;&#125;</div><div class="line">#define BPLoggerNetwork(...)            while(0) &#123;&#125;</div><div class="line">#define BPLoggerAd(level, ...)          while(0) &#123;&#125;</div><div class="line">#define BPLoggerEvent(...)              while(0) &#123;&#125;</div><div class="line">#define BPLoggerCache(...)              while(0) &#123;&#125;</div><div class="line">#define BPLoggerSkipping(...)           while(0) &#123;&#125;</div><div class="line">#define BPLoggerCWZSDK(...)             while(0) &#123;&#125;</div><div class="line">#define BPLoggerCustom(CustomStr,...)   while(0) &#123;&#125;</div><div class="line"></div><div class="line">#endif</div><div class="line"></div><div class="line">#else</div><div class="line"></div><div class="line">#ifdef DEBUG</div><div class="line">#define BPLog(...)                      NSLog(__VA_ARGS__)</div><div class="line">#define BPLoggerNetwork(...)            NSLog(__VA_ARGS__)</div><div class="line">#define BPLoggerAd(...)                 NSLog(__VA_ARGS__)</div><div class="line">#define BPLoggerEvent(...)              NSLog(__VA_ARGS__)</div><div class="line">#define BPLoggerCache(...)              NSLog(__VA_ARGS__)</div><div class="line">#define BPLoggerSkipping(...)           NSLog(__VA_ARGS__)</div><div class="line">#define BPLoggerCWZSDK(...)             NSLog(__VA_ARGS__)</div><div class="line">#define BPLoggerCustom(CustomStr,...)   NSLog(__VA_ARGS__)</div><div class="line"></div><div class="line">#else</div><div class="line"></div><div class="line">#define BPLog(...)                      while(0) &#123;&#125;</div><div class="line">#define BPLoggerNetwork(...)            while(0) &#123;&#125;</div><div class="line">#define BPLoggerAd(level, ...)          while(0) &#123;&#125;</div><div class="line">#define BPLoggerEvent(...)              while(0) &#123;&#125;</div><div class="line">#define BPLoggerCache(...)              while(0) &#123;&#125;</div><div class="line">#define BPLoggerSkipping(...)           while(0) &#123;&#125;</div><div class="line">#define BPLoggerCWZSDK(...)             while(0) &#123;&#125;</div><div class="line">#define BPLoggerCustom(CustomStr,...)   while(0) &#123;&#125;</div><div class="line"></div><div class="line">#endif</div><div class="line"></div><div class="line">#endif</div></pre></td></tr></table></figure>
+<p>3.尽管如此，我们还是依赖主工程需要提供的宏定义，离”插件”的定义还差最后一步，我们要想办法把这个宏定义也去掉，比如这样：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div></pre></td><td class="code"><pre><div class="line">#import &lt;Foundation/Foundation.h&gt;</div><div class="line">#import &lt;CoreGraphics/CoreGraphics.h&gt;</div><div class="line"></div><div class="line">#if __has_include(&lt;NSLogger/LoggerClient.h&gt;)</div><div class="line">#import &quot;LoggerClient.h&quot;</div><div class="line">#endif</div><div class="line"></div><div class="line">#if __has_include(&lt;NSLogger/LoggerClient.h&gt;)</div><div class="line"></div><div class="line">#ifdef DEBUG</div><div class="line"></div><div class="line">#define BPLog(...)                      LogMessageF(__FILE__, __LINE__, __FUNCTION__, @&quot;Normol Log&quot;, 0, __VA_ARGS__)</div><div class="line">#define BPLoggerNetwork(...)            LogMessageF(__FILE__, __LINE__, __FUNCTION__, @&quot;NetWork Log&quot;, 0, __VA_ARGS__)</div><div class="line">#define BPLoggerAd(...)                 LogMessageF(__FILE__, __LINE__, __FUNCTION__, @&quot;AD Log&quot;, 0, __VA_ARGS__)</div><div class="line">#define BPLoggerEvent(...)              LogMessageF(__FILE__, __LINE__, __FUNCTION__, @&quot;Event Log&quot;, 0, __VA_ARGS__)</div><div class="line">#define BPLoggerCache(...)              LogMessageF(__FILE__, __LINE__, __FUNCTION__, @&quot;Cache Log&quot;, 0, __VA_ARGS__)</div><div class="line">#define BPLoggerSkipping(...)           LogMessageF(__FILE__, __LINE__, __FUNCTION__, @&quot;Skipping Log&quot;, 0, __VA_ARGS__)</div><div class="line">#define BPLoggerCWZSDK(...)             LogMessageF(__FILE__, __LINE__, __FUNCTION__, @&quot;Cwzsdk Dispatch Log&quot;, 0, __VA_ARGS__)</div><div class="line">#define BPLoggerCustom(CustomStr,...)   LogMessageF(__FILE__, __LINE__, __FUNCTION__, CustomStr, 0, __VA_ARGS__)</div><div class="line"></div><div class="line">#else</div><div class="line"></div><div class="line">#define BPLog(...)                      while(0) &#123;&#125;</div><div class="line">#define BPLoggerNetwork(...)            while(0) &#123;&#125;</div><div class="line">#define BPLoggerAd(level, ...)          while(0) &#123;&#125;</div><div class="line">#define BPLoggerEvent(...)              while(0) &#123;&#125;</div><div class="line">#define BPLoggerCache(...)              while(0) &#123;&#125;</div><div class="line">#define BPLoggerSkipping(...)           while(0) &#123;&#125;</div><div class="line">#define BPLoggerCWZSDK(...)             while(0) &#123;&#125;</div><div class="line">#define BPLoggerCustom(CustomStr,...)   while(0) &#123;&#125;</div><div class="line"></div><div class="line">#endif</div><div class="line"></div><div class="line">#else</div><div class="line"></div><div class="line">#ifdef DEBUG</div><div class="line">#define BPLog(...)                      NSLog(__VA_ARGS__)</div><div class="line">#define BPLoggerNetwork(...)            NSLog(__VA_ARGS__)</div><div class="line">#define BPLoggerAd(...)                 NSLog(__VA_ARGS__)</div><div class="line">#define BPLoggerEvent(...)              NSLog(__VA_ARGS__)</div><div class="line">#define BPLoggerCache(...)              NSLog(__VA_ARGS__)</div><div class="line">#define BPLoggerSkipping(...)           NSLog(__VA_ARGS__)</div><div class="line">#define BPLoggerCWZSDK(...)             NSLog(__VA_ARGS__)</div><div class="line">#define BPLoggerCustom(CustomStr,...)   NSLog(__VA_ARGS__)</div><div class="line"></div><div class="line">#else</div><div class="line"></div><div class="line">#define BPLog(...)                      while(0) &#123;&#125;</div><div class="line">#define BPLoggerNetwork(...)            while(0) &#123;&#125;</div><div class="line">#define BPLoggerAd(level, ...)          while(0) &#123;&#125;</div><div class="line">#define BPLoggerEvent(...)              while(0) &#123;&#125;</div><div class="line">#define BPLoggerCache(...)              while(0) &#123;&#125;</div><div class="line">#define BPLoggerSkipping(...)           while(0) &#123;&#125;</div><div class="line">#define BPLoggerCWZSDK(...)             while(0) &#123;&#125;</div><div class="line">#define BPLoggerCustom(CustomStr,...)   while(0) &#123;&#125;</div><div class="line"></div><div class="line">#endif</div><div class="line"></div><div class="line">#endif</div></pre></td></tr></table></figure>
+<p>这里面有个关键的宏定义：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">#if __has_include()</div></pre></td></tr></table></figure>
+<p>此宏传入一个你想引入文件的名称作为参数，如果该文件能够被引入则返回1，否则返回0。</p>
+<p>现在我们的所有基础库都不依赖NSLogger，只要主工程podfile中有NSLogger，那么这个工具就能工作，如果没有，就是普通的NSLog</p>
+<h2 id="基于上面接入查违章的过程，-if-has-include-这个方式是否可以进行延展使用"><a href="#基于上面接入查违章的过程，-if-has-include-这个方式是否可以进行延展使用" class="headerlink" title="基于上面接入查违章的过程，#if __has_include()这个方式是否可以进行延展使用"></a>基于上面接入查违章的过程，#if __has_include()这个方式是否可以进行延展使用</h2><p>比如CLSafeKit/Log是不是可以以”插件”的形式接入查违章，而不是直接依赖在BPCommon中。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2017/12/28/2017-12-28/" data-id="cjbqj4ept000cn462bz3u4ijz" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/NSLogger/">NSLogger</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-2017-12-22" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/12/22/2017-12-22/" class="article-date">
+  <time datetime="2017-12-22T16:04:29.000Z" itemprop="datePublished">2017-12-22</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/share/">share</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/12/22/2017-12-22/">第6期博客（响应链）</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="iOS响应链中HitTest、nextReponder的介绍"><a href="#iOS响应链中HitTest、nextReponder的介绍" class="headerlink" title="iOS响应链中HitTest、nextReponder的介绍"></a>iOS响应链中HitTest、nextReponder的介绍</h1><blockquote>
+<p>iOS的UIEvent事件有好几种：Touch Events(触摸事件)、Motion Events(运动事件)、Remote Events(远程事件)，其中最常用的应该就是Touch Events了，今天我们主要就讲它，核心就是到<code>UIView</code>的<br><code>func hitTest(_ point: CGPoint, with event: UIEvent?) -&gt; UIView?</code><br>以及nextReponder两个</p>
+</blockquote>
+<p><strong>比如成果：魔图&amp;图片浏览 复杂的视图层级拆分</strong></p>
+<p><img src="https://user-images.githubusercontent.com/9360037/34282300-3e5aab32-e6ff-11e7-87f3-4b9f4a1d5692.png" alt="wechatimg166"><br><img src="https://user-images.githubusercontent.com/9360037/34268452-b59c6ae4-e6bb-11e7-974e-63411e9f87b3.png" alt="pb"></p>
+<p><strong>考一考:</strong> 直接继承于UIResponder的类有哪些？</p>
+<h2 id="UIResponder-响应链-？？"><a href="#UIResponder-响应链-？？" class="headerlink" title="UIResponder ?? 响应链 ？？"></a>UIResponder ?? 响应链 ？？</h2><ul>
+<li>响应链是什么时候怎样构建的？</li>
+<li>事件第一个响应者是怎么确定的？</li>
+<li>事件第一个响应者确定后，系统是怎样传递事件的？</li>
+</ul>
+<h3 id="响应链的构建"><a href="#响应链的构建" class="headerlink" title="响应链的构建"></a>响应链的构建</h3><p>先看看UIResponder类</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">open <span class="keyword">var</span> next: <span class="type">UIResponder</span>? &#123; <span class="keyword">get</span> &#125;</div><div class="line">open <span class="keyword">var</span> canBecomeFirstResponder: <span class="type">Bool</span> &#123; <span class="keyword">get</span> &#125; <span class="comment">// default is NO    </span></div><div class="line"><span class="comment">// default is NO</span></div><div class="line">open <span class="function"><span class="keyword">func</span> <span class="title">becomeFirstResponder</span><span class="params">()</span></span> -&gt; <span class="type">Bool</span></div><div class="line">open <span class="keyword">var</span> canResignFirstResponder: <span class="type">Bool</span> &#123; <span class="keyword">get</span> &#125; <span class="comment">// default is YES    </span></div><div class="line"><span class="comment">// default is YES</span></div><div class="line">open <span class="function"><span class="keyword">func</span> <span class="title">resignFirstResponder</span><span class="params">()</span></span> -&gt; <span class="type">Bool</span></div><div class="line">open <span class="keyword">var</span> isFirstResponder: <span class="type">Bool</span> &#123; <span class="keyword">get</span> &#125;</div><div class="line"></div><div class="line">open <span class="function"><span class="keyword">func</span> <span class="title">touchesBegan</span><span class="params">(<span class="number">_</span> touches: Set&lt;UITouch&gt;, with event: UIEvent?)</span></span></div><div class="line">open <span class="function"><span class="keyword">func</span> <span class="title">touchesMoved</span><span class="params">(<span class="number">_</span> touches: Set&lt;UITouch&gt;, with event: UIEvent?)</span></span></div><div class="line">open <span class="function"><span class="keyword">func</span> <span class="title">touchesEnded</span><span class="params">(<span class="number">_</span> touches: Set&lt;UITouch&gt;, with event: UIEvent?)</span></span></div><div class="line">open <span class="function"><span class="keyword">func</span> <span class="title">touchesCancelled</span><span class="params">(<span class="number">_</span> touches: Set&lt;UITouch&gt;, with event: UIEvent?)</span></span></div></pre></td></tr></table></figure>
+<p>常见的触摸响应链构建</p>
+<blockquote>
+<ol>
+<li>addSubview</li>
+<li>ViewController 初始化</li>
+</ol>
+</blockquote>
+<p><img src="https://user-images.githubusercontent.com/9360037/34268459-b9c32874-e6bb-11e7-8227-ae124123a837.png" alt="res"></p>
+<h4 id="事件响应过程"><a href="#事件响应过程" class="headerlink" title="事件响应过程"></a>事件响应过程</h4><ul>
+<li>触摸开始</li>
+<li>事件入栈</li>
+<li>runloop响应</li>
+<li>uiapplication 事件传递给 windows</li>
+<li>hitTest 找到 view (<a href="https://lists.apple.com/archives/cocoa-dev/2014/Feb/msg00118.html" target="_blank" rel="external">hitTest会被调用两次,为什么，不知道？</a>)</li>
+<li>hitView 响应 touchEvent</li>
+</ul>
+<p><strong>核心的方法</strong></p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">hitTest</span><span class="params">(<span class="number">_</span> point: CGPoint, with event: UIEvent?)</span></span> -&gt; <span class="type">UIView</span>?</div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">point</span><span class="params">(inside point: CGPoint, with event: UIEvent?)</span></span> -&gt; <span class="type">Bool</span></div></pre></td></tr></table></figure>
+<blockquote>
+<p>注意：hittest &amp; pointinside是uiview的实例方法</p>
+</blockquote>
+<p>比如tableview的cell点击,hitTest寻找响应cell的过程</p>
+<ul>
+<li>windows</li>
+<li>windows.rootController (navController).view</li>
+<li>navController.rootControler (vc).view</li>
+<li>tableview</li>
+<li>some cell</li>
+<li>contentView</li>
+</ul>
+<blockquote>
+<p>Note: 查询过程也不是这么顺利的，有弯路，也有属性限制</p>
+</blockquote>
+<ul>
+<li>hittest打算从后往前遍历subviews,直到找到才停止遍历</li>
+<li>subview必须符合<ul>
+<li>pointInside return YES</li>
+<li>属性限制有<ul>
+<li>alpha &gt; 0.01</li>
+<li>hidden == NO</li>
+<li>userInteractionEnabled == YES</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 模拟原生未干预下的代码</span></div><div class="line"><span class="keyword">override</span> <span class="function"><span class="keyword">func</span> <span class="title">hitTest</span><span class="params">(<span class="number">_</span> point: CGPoint, with event: UIEvent?)</span></span> -&gt; <span class="type">UIView</span>? &#123;</div><div class="line">	<span class="keyword">if</span> !isUserInteractionEnabled || isHidden || alpha&lt;=<span class="number">0.01</span> &#123; <span class="keyword">return</span> <span class="literal">nil</span> &#125;</div><div class="line">	<span class="keyword">if</span> !<span class="keyword">self</span>.point(inside: point, with: event) &#123; <span class="keyword">return</span> <span class="literal">nil</span> &#125;</div><div class="line">	<span class="keyword">for</span> subview <span class="keyword">in</span> subviews.reversed() &#123;</div><div class="line">		<span class="keyword">let</span> convertPoint = subview.convert(point, from: <span class="keyword">self</span>)</div><div class="line">		<span class="keyword">let</span> subHitTestView = subview.hitTest(convertPoint, with: event)</div><div class="line">		<span class="keyword">if</span> <span class="keyword">let</span> hitTestView = subHitTestView &#123; <span class="keyword">return</span> hitTestView &#125;</div><div class="line">	&#125;</div><div class="line">	<span class="keyword">return</span> <span class="keyword">self</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="那我们干预后，HitTest的实战应用就有"><a href="#那我们干预后，HitTest的实战应用就有" class="headerlink" title="那我们干预后，HitTest的实战应用就有"></a>那我们干预后，HitTest的实战应用就有</h4><ul>
+<li>复杂的视图层级的拆分</li>
+</ul>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">override</span> <span class="function"><span class="keyword">func</span> <span class="title">hitTest</span><span class="params">(<span class="number">_</span> point: CGPoint, with event: UIEvent?)</span></span> -&gt; <span class="type">UIView</span>? &#123;</div><div class="line">	<span class="keyword">let</span> view = <span class="keyword">super</span>.hitTest(point, with: event)</div><div class="line">	<span class="keyword">return</span> view == <span class="keyword">self</span> ? <span class="literal">nil</span> : view</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<ul>
+<li>自定义Touch事件传递对象</li>
+</ul>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">override</span> <span class="function"><span class="keyword">func</span> <span class="title">hitTest</span><span class="params">(<span class="number">_</span> point: CGPoint, with event: UIEvent?)</span></span> -&gt; <span class="type">UIView</span>? &#123;</div><div class="line">	<span class="keyword">let</span> view = <span class="keyword">super</span>.hitTest(point, with: event)</div><div class="line">	<span class="keyword">return</span> view == someBtn ? anotherBtn : view</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<ul>
+<li>自定义控件的响应区域及响应层级</li>
+</ul>
+<blockquote>
+<p>view修改响应区域方式有两种，一种如下，它的superview来hitTest，第二种自己hitTest</p>
+</blockquote>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">override</span> <span class="function"><span class="keyword">func</span> <span class="title">hitTest</span><span class="params">(<span class="number">_</span> point: CGPoint, with event: UIEvent?)</span></span> -&gt; <span class="type">UIView</span>? &#123;</div><div class="line">	<span class="keyword">if</span> someBtn.frame.insetBy(dx: -<span class="number">10</span>, dy: -<span class="number">10</span>).<span class="built_in">contains</span>(point) &#123;</div><div class="line">		<span class="keyword">return</span> someBtn</div><div class="line">	&#125;</div><div class="line">	<span class="keyword">return</span> <span class="keyword">super</span>.point(inside: point, with: event)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="响应链-nextResponder"><a href="#响应链-nextResponder" class="headerlink" title="响应链 .nextResponder"></a>响应链 .nextResponder</h2><blockquote>
+<p>和 hitTest自底向上相反，它是从最末端的responder向下传递，hitTest自下而上查找响应的view，nextResponder是基于hitTest基础上，自上而下寻找event的响应者</p>
+</blockquote>
+<p>常见的应用案例：BPUIResponderAdditions中的方法，可以查找view的Controller或navigationController</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">- (<span class="keyword">nullable</span> __kindof <span class="built_in">UIResponder</span> *)findNextResonderInClass:(<span class="keyword">nonnull</span> Class)responderClass</div><div class="line">&#123;</div><div class="line">	<span class="built_in">UIResponder</span> *next = <span class="keyword">self</span>;</div><div class="line">	<span class="keyword">do</span> &#123;</div><div class="line">		next = [next nextResponder];</div><div class="line">		<span class="keyword">if</span> ([next isKindOfClass:responderClass]) &#123;</div><div class="line">		<span class="keyword">break</span>;</div><div class="line">	&#125;</div><div class="line">	<span class="comment">// next 不为空 且 不是达到最底层的 appdelegate</span></div><div class="line">	&#125; <span class="keyword">while</span> (next!=<span class="literal">nil</span> &amp;&amp; ![next conformsToProtocol:<span class="class"><span class="keyword">@protocol</span>(<span class="title">UIApplicationDelegate</span>)]);</span></div><div class="line">	<span class="keyword">return</span> next;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">// 查询响应最近的 controller</span></div><div class="line"><span class="built_in">UIViewController</span> *vc = [view findNextResonderInClass:[<span class="built_in">UIViewController</span> <span class="keyword">class</span>]];</div></pre></td></tr></table></figure>
+<h4 id="知识点："><a href="#知识点：" class="headerlink" title="知识点："></a>知识点：</h4><ul>
+<li><strong>响应链事件传递</strong></li>
+</ul>
+<blockquote>
+<p>通过nextResponder向下传递event</p>
+</blockquote>
+<p>演示</p>
+<blockquote>
+<p>touchesBegan / super.touchesBegan 或 nextResponder.touchesBegan 一直调用下去</p>
+</blockquote>
+<ul>
+<li><strong>第一响应者</strong><blockquote>
+<p>有拦腰截断的意思，原有的顶部第一响应者被修改，响应链中接收事件第一人（常见textField，webView及UImenuController，见demo）</p>
+</blockquote>
+</li>
+</ul>
+<p>演示</p>
+<blockquote>
+<ul>
+<li>Button event 先下传递</li>
+<li>becomeFirstResponder后，nextResponder无事件下传</li>
+<li>canBecomeFirstResponder \ becomeFirstResponder 拦截</li>
+</ul>
+</blockquote>
+<ul>
+<li><strong>cancelsTouchesInView</strong></li>
+</ul>
+<blockquote>
+<p>系统会将Touch cancel消息发送给hitTestView ，并调用hitTestView的TouchCancel</p>
+</blockquote>
+<p>演示</p>
+<blockquote>
+<p>demo:button的touchUpInside对UIPanGestureRecognizer的影响</p>
+</blockquote>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2017/12/22/2017-12-22/" data-id="cjbqj4epr000an4620hckxye5" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/hitTest/">hitTest</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/nextResponder/">nextResponder</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/responder-chain/">responder chain</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-2017-11-27" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/11/27/2017-11-27/" class="article-date">
+  <time datetime="2017-11-27T16:04:29.000Z" itemprop="datePublished">2017-11-27</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/share/">share</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/11/27/2017-11-27/">第三期博客（SafeKit，混淆，m34）</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="CATransform3D-的-m34-属性"><a href="#CATransform3D-的-m34-属性" class="headerlink" title="CATransform3D 的 m34 属性"></a>CATransform3D 的 m34 属性</h2><blockquote>
+<p><code>m34</code>的默认值是0，我们可以通过设置<code>m34</code>为<code>-1.0 / d</code>来应用透视效果，d代表了想象中视角相机和屏幕之间的距离，以像素为单位</p>
+</blockquote>
+<p><img src="https://github.com/AttackOnDobby/iOS-Core-Animation-Advanced-Techniques/raw/1767d1ee17e8d99f544603974ddc673fe6c0997e/5-变换/5.9.jpeg" alt=""></p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#import <span class="meta-string">"ViewController.h"</span></span></div><div class="line"><span class="meta">#import <span class="meta-string">&lt;QuartzCore/QuartzCore.h&gt;</span></span></div><div class="line"></div><div class="line"><span class="meta">#define WIDTH 10</span></div><div class="line"><span class="meta">#define HEIGHT 10</span></div><div class="line"><span class="meta">#define DEPTH 10</span></div><div class="line"><span class="meta">#define SIZE 100</span></div><div class="line"><span class="meta">#define SPACING 150</span></div><div class="line"><span class="meta">#define CAMERA_DISTANCE 500</span></div><div class="line"></div><div class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">ViewController</span> ()</span></div><div class="line">￼</div><div class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">strong</span>) <span class="keyword">IBOutlet</span> <span class="built_in">UIScrollView</span> *scrollView;</div><div class="line"></div><div class="line"><span class="keyword">@end</span></div><div class="line"></div><div class="line"><span class="class"><span class="keyword">@implementation</span> <span class="title">ViewController</span></span></div><div class="line"></div><div class="line">- (<span class="keyword">void</span>)viewDidLoad</div><div class="line">&#123;</div><div class="line">    [<span class="keyword">super</span> viewDidLoad];</div><div class="line"></div><div class="line">    <span class="keyword">self</span>.scrollView.contentSize = <span class="built_in">CGSizeMake</span>((WIDTH - <span class="number">1</span>)*SPACING, (HEIGHT - <span class="number">1</span>)*SPACING);</div><div class="line"></div><div class="line">    <span class="built_in">CATransform3D</span> transform = <span class="built_in">CATransform3DIdentity</span>;</div><div class="line">    transform.m34 = <span class="number">-1.0</span> / <span class="built_in">CAMERA_DISTANCE</span>;</div><div class="line">    <span class="keyword">self</span>.scrollView.layer.sublayerTransform = transform;</div><div class="line"></div><div class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> z = DEPTH - <span class="number">1</span>; z &gt;= <span class="number">0</span>; z--) &#123;</div><div class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> y = <span class="number">0</span>; y &lt; HEIGHT; y++) &#123;</div><div class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> x = <span class="number">0</span>; x &lt; WIDTH; x++) &#123;</div><div class="line">                <span class="comment">//create layer</span></div><div class="line">                <span class="built_in">CALayer</span> *layer = [<span class="built_in">CALayer</span> layer];</div><div class="line">                layer.frame = <span class="built_in">CGRectMake</span>(<span class="number">0</span>, <span class="number">0</span>, SIZE, SIZE);</div><div class="line">                layer.position = <span class="built_in">CGPointMake</span>(x*SPACING, y*SPACING);</div><div class="line">                layer.zPosition = -z*SPACING;</div><div class="line">                <span class="comment">//set background color</span></div><div class="line">                layer.backgroundColor = [<span class="built_in">UIColor</span> colorWithWhite:<span class="number">1</span>-z*(<span class="number">1.0</span>/DEPTH) alpha:<span class="number">1</span>].CGColor;</div><div class="line">                <span class="comment">//attach to scroll view</span></div><div class="line">                [<span class="keyword">self</span>.scrollView.layer addSublayer:layer];</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"><span class="keyword">@end</span></div></pre></td></tr></table></figure>
+<p><strong>m34的运用例子: XYDebugView</strong></p>
+<p><a href="https://github.com/ZhipingYang/XYDebugView" target="_blank" rel="external">详情查看</a></p>
+<h2 id="SafeKit-及其他-by-Joliy"><a href="#SafeKit-及其他-by-Joliy" class="headerlink" title="SafeKit 及其他 by Joliy"></a>SafeKit 及其他 by Joliy</h2><p>CLSafeKit 具体见:<a href="http://gitlab.chelun.com/ios_plugin/CLSafeKit/blob/master/README.md" target="_blank" rel="external">README.md</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2017/11/27/2017-11-27/" data-id="cjbqj4epm0004n462ear6qo5b" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/SafeKit/">SafeKit</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/m34/">m34</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/混淆/">混淆</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-2017-12-01" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/11/27/2017-12-01/" class="article-date">
+  <time datetime="2017-11-27T16:04:29.000Z" itemprop="datePublished">2017-11-27</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/share/">share</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/11/27/2017-12-01/">第4期博客（混编尝试）</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul>
+<li><a href="http://swift.gg/2016/03/17/should-you-still-learn-objective-c/" target="_blank" rel="external">你是否依然应该学习 Objective-C 呢？</a></li>
+<li><a href="http://blog.csdn.net/clovejq/article/details/71107796?utm_source=itdadao&amp;utm_medium=referral" target="_blank" rel="external">iOS 动态库和静态库的的区别 动态库的隔离与静态库的吸附问题以及解决方法</a></li>
+<li><a href="http://blog.csdn.net/u012390519/article/details/78017999" target="_blank" rel="external">Cocoapods制作pod时，依赖百度地图SDK的一些问题</a></li>
+<li><a href="http://www.jianshu.com/p/a1d2d148fdd3" target="_blank" rel="external">让CocoaPods static library支持Module</a> <code>Allow Non-modular includes in Framework Modules</code>开关的问题</li>
+<li><a href="http://www.jianshu.com/p/307427e6d990" target="_blank" rel="external">swift中使用MARK,TODO,FIXME</a> <code>代码分类，分割线标识</code></li>
+</ul>
+<h2 id="网络库的转换内容，需要注意的事项"><a href="#网络库的转换内容，需要注意的事项" class="headerlink" title="网络库的转换内容，需要注意的事项"></a>网络库的转换内容，需要注意的事项</h2><ul>
+<li>用新的网络库，请求接口携带cookie进行的安全验证问题 （需要与objc的使用进行隔离）</li>
+<li>如果使用ASI进行请求时，混编是否会出现类型转换的问题</li>
+<li>需要对CKDataResult,CKDataService进行桥接，进行试验</li>
+<li>数据请求模型的构建，会出现继承Object-c出现的问题 比如CKListDataModel</li>
+<li>新出一套的话需要对网络层进行封装处理，关键点在于cookie处</li>
+<li>JsonKit的选择，model类型转换的问题</li>
+</ul>
+<h2 id="图片加载的问题"><a href="#图片加载的问题" class="headerlink" title="图片加载的问题"></a>图片加载的问题</h2><ul>
+<li>牵涉到社区小视频的问题</li>
+</ul>
+<h2 id="缓存的问题"><a href="#缓存的问题" class="headerlink" title="缓存的问题"></a>缓存的问题</h2><ul>
+<li>应该可以接受桥接转换的使用方式进行完成</li>
+</ul>
+<h2 id="UI框架层的问题"><a href="#UI框架层的问题" class="headerlink" title="UI框架层的问题"></a>UI框架层的问题</h2><ul>
+<li>网络请求层，下拉刷新，上拉加载更多的框架需要按照Swift的思想重新封装（需要与objc的使用进行隔离）</li>
+</ul>
+<h2 id="使用Swift重构-方案"><a href="#使用Swift重构-方案" class="headerlink" title="使用Swift重构 方案"></a>使用Swift重构 方案</h2><ul>
+<li>网络层 <a href="https://github.com/Alamofire/Alamofire" target="_blank" rel="external">Alamofire</a></li>
+<li>Json 解析 <a href="https://github.com/SwiftyJSON/SwiftyJSON" target="_blank" rel="external">SwiftyJSON</a></li>
+<li>JSON to Model <a href="https://github.com/Hearst-DD/ObjectMapper" target="_blank" rel="external">ObjectMapper</a></li>
+<li>图片加载 <a href="https://github.com/onevcat/Kingfisher" target="_blank" rel="external">Kingfisher</a></li>
+<li>自动布局 <a href="https://github.com/SnapKit/SnapKit" target="_blank" rel="external">SnapKit</a></li>
+<li>设计模式 <a href="https://github.com/ochococo/Design-Patterns-In-Swift" target="_blank" rel="external">Design-Patterns-In-Swift</a></li>
+</ul>
+<h3 id="需要自行完善的SDK"><a href="#需要自行完善的SDK" class="headerlink" title="需要自行完善的SDK"></a>需要自行完善的SDK</h3><ul>
+<li>UIKit 扩展</li>
+<li>Foundation 扩展</li>
+<li>网络层 扩展</li>
+<li>图片加载层 扩展 (如果用到小视频时需要此扩展)</li>
+<li>下拉刷新，上拉加载更多的逻辑 扩展</li>
+<li>路由层的处理</li>
+<li>定位问题</li>
+<li>分享问题</li>
+<li>扫描库的问题</li>
+<li>searchKit scanKit 等等的依赖问题解决，使用自己的依赖的时候不要用尖括号</li>
+<li>webController的支持，包括JSbridgeWebController</li>
+</ul>
+<h2 id="制作模拟器和真机都兼容的动态库需要加入的shell脚本"><a href="#制作模拟器和真机都兼容的动态库需要加入的shell脚本" class="headerlink" title="制作模拟器和真机都兼容的动态库需要加入的shell脚本"></a>制作模拟器和真机都兼容的动态库需要加入的shell脚本</h2><figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">if</span> [ <span class="string">"<span class="variable">$&#123;ACTION&#125;</span>"</span> = <span class="string">"build"</span> ]</div><div class="line"></div><div class="line"><span class="keyword">then</span></div><div class="line"></div><div class="line">INSTALL_DIR=<span class="variable">$&#123;SRCROOT&#125;</span>/Products/<span class="variable">$&#123;PROJECT_NAME&#125;</span>.framework</div><div class="line"></div><div class="line">DEVICE_DIR=<span class="variable">$&#123;BUILD_ROOT&#125;</span>/<span class="variable">$&#123;CONFIGURATION&#125;</span>-iphoneos/<span class="variable">$&#123;PROJECT_NAME&#125;</span>.framework</div><div class="line"></div><div class="line">SIMULATOR_DIR=<span class="variable">$&#123;BUILD_ROOT&#125;</span>/<span class="variable">$&#123;CONFIGURATION&#125;</span>-iphonesimulator/<span class="variable">$&#123;PROJECT_NAME&#125;</span>.framework</div><div class="line"></div><div class="line"><span class="keyword">if</span> [ <span class="_">-d</span> <span class="string">"<span class="variable">$&#123;INSTALL_DIR&#125;</span>"</span> ]</div><div class="line"></div><div class="line"><span class="keyword">then</span></div><div class="line"></div><div class="line">rm -rf <span class="string">"<span class="variable">$&#123;INSTALL_DIR&#125;</span>"</span></div><div class="line"></div><div class="line"><span class="keyword">fi</span></div><div class="line"></div><div class="line">mkdir -p <span class="string">"<span class="variable">$&#123;INSTALL_DIR&#125;</span>"</span></div><div class="line"></div><div class="line">cp -R <span class="string">"<span class="variable">$&#123;DEVICE_DIR&#125;</span>/"</span> <span class="string">"<span class="variable">$&#123;INSTALL_DIR&#125;</span>/"</span></div><div class="line"></div><div class="line"><span class="comment">#ditto "$&#123;DEVICE_DIR&#125;/Headers" "$&#123;INSTALL_DIR&#125;/Headers"</span></div><div class="line"></div><div class="line">lipo -create <span class="string">"<span class="variable">$&#123;DEVICE_DIR&#125;</span>/<span class="variable">$&#123;PROJECT_NAME&#125;</span>"</span> <span class="string">"<span class="variable">$&#123;SIMULATOR_DIR&#125;</span>/<span class="variable">$&#123;PROJECT_NAME&#125;</span>"</span> -output <span class="string">"<span class="variable">$&#123;INSTALL_DIR&#125;</span>/<span class="variable">$&#123;PROJECT_NAME&#125;</span>"</span></div><div class="line"></div><div class="line">open <span class="string">"<span class="variable">$&#123;DEVICE_DIR&#125;</span>"</span></div><div class="line"></div><div class="line">open <span class="string">"<span class="variable">$&#123;SRCROOT&#125;</span>/Products"</span></div><div class="line"></div><div class="line"><span class="keyword">fi</span></div></pre></td></tr></table></figure>
+<h2 id="混编需要注意的地方"><a href="#混编需要注意的地方" class="headerlink" title="混编需要注意的地方"></a>混编需要注意的地方</h2><p>1、swift不认识NS_ENUM宏，直接typedef enum… </p>
+<p>2、DispatchQueue.main.async</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="type">DispatchQueue</span>.main.async &#123;</div><div class="line">            <span class="keyword">let</span> topC: <span class="type">UIViewController</span> = <span class="type">UIApplication</span>.shared.topViewController()</div><div class="line">            </div><div class="line">            <span class="comment">//取最顶部的vc,如果vc的navigationController存在，则用该nav做处理</span></div><div class="line">            <span class="keyword">if</span>  <span class="keyword">let</span> topNav = topC.navigationController &#123;</div><div class="line">            <span class="comment">//注意isKindOfClass的调用</span></div><div class="line">                <span class="keyword">if</span> controller.isKind(of: <span class="type">UINavigationController</span>.<span class="keyword">self</span>) &#123;</div><div class="line">                    topNav.present(controller, animated: <span class="literal">true</span>, completion: <span class="literal">nil</span>)</div><div class="line">                &#125; <span class="keyword">else</span> &#123;</div><div class="line">                    topNav.pushViewController(controller, animated: <span class="literal">true</span>)</div><div class="line">                &#125;</div><div class="line">            &#125; <span class="keyword">else</span> &#123;</div><div class="line">                <span class="keyword">if</span> controller.isKind(of: <span class="type">UINavigationController</span>.<span class="keyword">self</span>) &#123;</div><div class="line">                    topC.present(controller, animated: <span class="literal">true</span>, completion: <span class="literal">nil</span>)</div><div class="line">                &#125; <span class="keyword">else</span> &#123;</div><div class="line">                    topC.present(<span class="type">CLHNavigationController</span>.<span class="keyword">init</span>(rootViewController: controller), animated: <span class="literal">true</span>, completion: <span class="literal">nil</span>)</div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line">        &#125;</div></pre></td></tr></table></figure>
+<p>3、注意NSDictionary和Dictionary的区别，通过objc传值过来的都是NSDictionary</p>
+<p>4、NSthread 要用Thread</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">while</span> waitTime &lt; <span class="number">8.0</span> &amp;&amp; <span class="type">CLHCoreUtil</span>.mainController() == <span class="literal">nil</span> &#123;</div><div class="line">            <span class="type">Thread</span>.sleep(forTimeInterval: <span class="number">0.1</span>)</div><div class="line">            waitTime = waitTime + <span class="number">0.1</span></div><div class="line">        &#125;</div></pre></td></tr></table></figure>
+<p>5、注册通知或者prformSelector调用</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//注册推送通知</span></div><div class="line">        <span class="keyword">let</span> notificationDidOpenName = <span class="type">NSNotification</span>.<span class="type">Name</span>(<span class="type">APP_EVENT_PUSH_NOTIFICATION_DID_OPEN</span>)</div><div class="line">        <span class="type">NotificationCenter</span>.<span class="keyword">default</span>.addObserver(<span class="keyword">self</span>, selector: #selector(pushNotificationDidOpen(notification:)), name: notificationDidOpenName, object: <span class="literal">nil</span>)</div><div class="line">        <span class="keyword">let</span> notificationDidReciveName = <span class="type">NSNotification</span>.<span class="type">Name</span>(<span class="type">APP_EVENT_PUSH_NOTIFICATION_DID_RECIVE</span>)</div><div class="line">        <span class="type">NotificationCenter</span>.<span class="keyword">default</span>.addObserver(<span class="keyword">self</span>, selector: #selector(pushNotificationDidOpen(notification:)), name: notificationDidReciveName, object: <span class="literal">nil</span>)</div><div class="line">        </div><div class="line">        </div><div class="line">        <span class="meta">@objc</span> <span class="function"><span class="keyword">func</span> <span class="title">pushNotificationDidOpen</span><span class="params">(notification: NSNotification)</span></span> &#123;</div><div class="line">        &#125;</div><div class="line">        </div><div class="line">        <span class="meta">@objc</span> <span class="function"><span class="keyword">func</span> <span class="title">pushNotificationDidRecive</span><span class="params">(notification: NSNotification)</span></span> &#123;</div><div class="line">        &#125;</div><div class="line">        </div><div class="line">        <span class="comment">//peform</span></div><div class="line">        <span class="keyword">self</span>.performSelector(inBackground: #selector(safePushViewController(controller:)), with: navController)</div><div class="line">        <span class="comment">//通过通知所进行的一系列的vc展示</span></div><div class="line">    <span class="meta">@objc</span> <span class="function"><span class="keyword">func</span> <span class="title">safePushViewController</span><span class="params">(controller: UIViewController)</span></span> &#123;</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
+<p>6、 UIAlertView 之坑，otherButtonTitle的问题</p>
+<p>7、如何添加warning标识,添加 New Run Script Phase，点击了之后就出现了下图的Run Script栏 ,添加如下shell脚本</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">TAGS=<span class="string">"TODO:|FIXME:"</span></div><div class="line"><span class="built_in">echo</span> <span class="string">"searching <span class="variable">$&#123;SRCROOT&#125;</span> for <span class="variable">$&#123;TAGS&#125;</span>"</span></div><div class="line">find <span class="string">"<span class="variable">$&#123;SRCROOT&#125;</span>"</span> \( -name <span class="string">"*.swift"</span> \) -print0 | xargs -0 egrep --with-filename --line-number --only-matching <span class="string">"(<span class="variable">$TAGS</span>).*\$"</span> | perl -p <span class="_">-e</span> <span class="string">"s/(<span class="variable">$TAGS</span>)/ warning: \$1/"</span></div></pre></td></tr></table></figure>
+<p>8、 CGRect 和 枚举实例，如下代码：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 添加滑动返回的左边阴影</span></div><div class="line">        <span class="keyword">let</span> shadowImageView = <span class="type">UIImageView</span>(image: <span class="type">UIImage</span>.<span class="keyword">init</span>(named: <span class="string">"leftside_shadow_bg"</span>))</div><div class="line">        shadowImageView.frame = <span class="type">CGRect</span>(x: -<span class="number">10</span>, y: <span class="number">0</span>, width: <span class="number">10</span>, height: <span class="keyword">self</span>.window!.rootViewController!.view.bounds.height)</div><div class="line">        shadowImageView.autoresizingMask = [.flexibleWidth, .flexibleHeight]</div><div class="line">        <span class="keyword">self</span>.window!.rootViewController!.view.addSubview(shadowImageView)</div></pre></td></tr></table></figure>
+<p>9、 swift中混编调用oc的实例方法和静态方法 QCPWelcomeView 举例</p>
+<p>10、关于私有库中bundle资源文件的管理，各个framework自己管理自己的bundle文件，不要依赖其他私有库或者从主项目中获取，可以传入实例化的资源问价载体</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2017/11/27/2017-12-01/" data-id="cjbqj4epn0005n462hz7j48q7" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Swift/">Swift</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-2017-12-08" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/11/27/2017-12-08/" class="article-date">
+  <time datetime="2017-11-27T16:04:29.000Z" itemprop="datePublished">2017-11-27</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/share/">share</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/11/27/2017-12-08/">第5期博客（Moya &amp; 绘图）</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="绘画代码"><a href="#绘画代码" class="headerlink" title="绘画代码"></a>绘画代码</h2><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div><div class="line">113</div><div class="line">114</div><div class="line">115</div><div class="line">116</div><div class="line">117</div><div class="line">118</div><div class="line">119</div><div class="line">120</div><div class="line">121</div><div class="line">122</div><div class="line">123</div><div class="line">124</div><div class="line">125</div><div class="line">126</div><div class="line">127</div><div class="line">128</div><div class="line">129</div><div class="line">130</div><div class="line">131</div><div class="line">132</div><div class="line">133</div><div class="line">134</div><div class="line">135</div><div class="line">136</div><div class="line">137</div><div class="line">138</div><div class="line">139</div><div class="line">140</div><div class="line">141</div><div class="line">142</div><div class="line">143</div><div class="line">144</div><div class="line">145</div><div class="line">146</div><div class="line">147</div><div class="line">148</div><div class="line">149</div><div class="line">150</div><div class="line">151</div><div class="line">152</div><div class="line">153</div><div class="line">154</div><div class="line">155</div><div class="line">156</div><div class="line">157</div><div class="line">158</div><div class="line">159</div><div class="line">160</div><div class="line">161</div><div class="line">162</div><div class="line">163</div><div class="line">164</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//</span></div><div class="line"><span class="comment">//  ViewController.swift</span></div><div class="line"><span class="comment">//  DrawDemo</span></div><div class="line"><span class="comment">//</span></div><div class="line"><span class="comment">//  Created by XcodeYang on 07/12/2017.</span></div><div class="line"><span class="comment">//  Copyright © 2017 XcodeYang. All rights reserved.</span></div><div class="line"><span class="comment">//</span></div><div class="line"></div><div class="line">import <span class="built_in">UIKit</span></div><div class="line"></div><div class="line">let numberOfDrawer = <span class="number">30</span></div><div class="line">let drawColor = <span class="built_in">UIColor</span>.yellow</div><div class="line">let lineWidth: <span class="built_in">CGFloat</span> = <span class="number">1.0</span></div><div class="line"></div><div class="line"><span class="keyword">enum</span> PenType: String &#123;</div><div class="line">	<span class="keyword">case</span> pencil = <span class="string">"铅笔"</span></div><div class="line">	<span class="keyword">case</span> bucket = <span class="string">"水桶"</span></div><div class="line">	<span class="keyword">case</span> eraser = <span class="string">"橡皮擦"</span></div><div class="line">	mutating func next() &#123;</div><div class="line">		<span class="keyword">switch</span> <span class="keyword">self</span> &#123;</div><div class="line">		<span class="keyword">case</span> .pencil:</div><div class="line">			<span class="keyword">self</span> = .bucket</div><div class="line">		<span class="keyword">case</span> .bucket:</div><div class="line">			<span class="keyword">self</span> = .eraser</div><div class="line">		<span class="keyword">case</span> .eraser:</div><div class="line">			<span class="keyword">self</span> = .pencil</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">class</span> ViewController: <span class="built_in">UIViewController</span> &#123;</div><div class="line">	</div><div class="line">	var pentype = PenType.pencil</div><div class="line">	var drawLayer: <span class="built_in">CAShapeLayer</span>!</div><div class="line">	var drawPaths = [<span class="built_in">CGMutablePath</span>]()</div><div class="line">	@IBOutlet <span class="keyword">weak</span> var penButton: <span class="built_in">UIButton</span>!</div><div class="line">	</div><div class="line">	var historyAllRecords = [<span class="built_in">CAShapeLayer</span>]()</div><div class="line">	var historyShowingRecords = [<span class="built_in">CAShapeLayer</span>]()</div><div class="line">	</div><div class="line">	private func creatNewLayer()-&gt; <span class="built_in">CAShapeLayer</span> &#123;</div><div class="line">		let layer = <span class="built_in">CAShapeLayer</span>()</div><div class="line">		layer.lineWidth = lineWidth;</div><div class="line">		layer.strokeColor = drawColor.cgColor</div><div class="line">		layer.fillColor = penButton.isSelected ? drawColor.cgColor : <span class="built_in">UIColor</span>.clear.cgColor</div><div class="line">		view.layer.addSublayer(layer)</div><div class="line">		<span class="keyword">return</span> layer</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	override func viewDidLoad() &#123;</div><div class="line">		<span class="keyword">super</span>.viewDidLoad()</div><div class="line">		</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	override var prefersStatusBarHidden: Bool &#123;</div><div class="line">		<span class="keyword">return</span> <span class="literal">true</span></div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	override func touchesBegan(_ touches: Set&lt;<span class="built_in">UITouch</span>&gt;, with event: <span class="built_in">UIEvent</span>?) &#123;</div><div class="line">		<span class="keyword">if</span> pentype == .eraser &#123; <span class="keyword">return</span> &#125;</div><div class="line">		</div><div class="line">		drawPaths.removeAll()</div><div class="line">		drawLayer = creatNewLayer()</div><div class="line">		guard let point = touches.first?.location(<span class="keyword">in</span>: view) <span class="keyword">else</span> &#123; <span class="keyword">return</span> &#125;</div><div class="line">		(<span class="number">0.</span>..numberOfDrawer).forEach &#123; index <span class="keyword">in</span></div><div class="line">			let path = <span class="built_in">CGMutablePath</span>()</div><div class="line">			path.move(to: convertPointByCenterOfPoint(point: point, index: index))</div><div class="line">			drawPaths.append(path)</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	override func touchesMoved(_ touches: Set&lt;<span class="built_in">UITouch</span>&gt;, with event: <span class="built_in">UIEvent</span>?) &#123;</div><div class="line">		</div><div class="line">		guard let point = touches.first?.location(<span class="keyword">in</span>: view) <span class="keyword">else</span> &#123; <span class="keyword">return</span> &#125;</div><div class="line">		<span class="keyword">if</span> pentype == .eraser &#123;</div><div class="line">			let deleteLayers = historyShowingRecords.filter(&#123; (pathLayer) -&gt; Bool <span class="keyword">in</span></div><div class="line">				<span class="keyword">return</span> pathLayer.path!.contains(point)</div><div class="line">			&#125;)</div><div class="line">			deleteLayers.forEach&#123; $<span class="number">0.</span>removeFromSuperlayer() &#125;</div><div class="line">			<span class="keyword">return</span></div><div class="line">		&#125;</div><div class="line">		</div><div class="line">		drawPaths.enumerated().forEach &#123; (index, path) <span class="keyword">in</span></div><div class="line">			path.addLine(to: convertPointByCenterOfPoint(point: point, index: index))</div><div class="line">		&#125;</div><div class="line">		</div><div class="line">		<span class="keyword">if</span> pentype == .bucket &#123;</div><div class="line">			let resultPath = drawPaths.reduce(<span class="built_in">CGMutablePath</span>(), &#123; (resultPath, nextPath) -&gt; <span class="built_in">CGMutablePath</span> <span class="keyword">in</span></div><div class="line">				let newNext = nextPath.mutableCopy()</div><div class="line">				newNext?.closeSubpath()</div><div class="line">				resultPath.addPath(newNext!)</div><div class="line">				<span class="keyword">return</span> resultPath</div><div class="line">			&#125;)</div><div class="line">			drawLayer.path = resultPath</div><div class="line">		&#125; <span class="keyword">else</span> &#123;</div><div class="line">			let resultPath = drawPaths.reduce(<span class="built_in">CGMutablePath</span>(), &#123; (resultPath, nextPath) -&gt; <span class="built_in">CGMutablePath</span> <span class="keyword">in</span></div><div class="line">				resultPath.addPath(nextPath)</div><div class="line">				<span class="keyword">return</span> resultPath</div><div class="line">			&#125;)</div><div class="line">			drawLayer.path = resultPath</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	override func touchesEnded(_ touches: Set&lt;<span class="built_in">UITouch</span>&gt;, with event: <span class="built_in">UIEvent</span>?) &#123;</div><div class="line">		<span class="keyword">if</span> pentype == .eraser &#123; <span class="keyword">return</span> &#125;</div><div class="line">		historyShowingRecords.append(drawLayer)</div><div class="line">		historyAllRecords = historyShowingRecords</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	override func touchesCancelled(_ touches: Set&lt;<span class="built_in">UITouch</span>&gt;, with event: <span class="built_in">UIEvent</span>?) &#123;</div><div class="line">		<span class="keyword">if</span> pentype == .eraser &#123; <span class="keyword">return</span> &#125;</div><div class="line">		historyShowingRecords.append(drawLayer)</div><div class="line">		historyAllRecords = historyShowingRecords</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	@IBAction func penChange(_ sender: <span class="built_in">UIButton</span>) &#123;</div><div class="line">		pentype.next()</div><div class="line">		sender.setTitle(pentype.rawValue, <span class="keyword">for</span>: .normal)</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	@IBAction func backAction(_ sender: <span class="built_in">UIButton</span>) &#123;</div><div class="line">		<span class="keyword">if</span> let deleteLayer = historyShowingRecords.last &#123;</div><div class="line">			deleteLayer.removeFromSuperlayer()</div><div class="line">			historyShowingRecords.removeLast()</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	@IBAction func recoverAction(_ sender: Any) &#123;</div><div class="line">		<span class="keyword">if</span> historyShowingRecords.count &lt; historyAllRecords.count &#123;</div><div class="line">			let recoverLayer = historyAllRecords[historyShowingRecords.count]</div><div class="line">			historyShowingRecords.append(recoverLayer)</div><div class="line">			view.layer.addSublayer(recoverLayer)</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	@IBAction func cleanAction(_ sender: Any) &#123;</div><div class="line">		historyShowingRecords.forEach&#123; $<span class="number">0.</span>removeFromSuperlayer() &#125;</div><div class="line">		historyShowingRecords.removeAll()</div><div class="line">		historyAllRecords.removeAll()</div><div class="line">	&#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line">extension ViewController &#123;</div><div class="line">	</div><div class="line">	func convertPointByCenterOfPoint(point:<span class="built_in">CGPoint</span>, index:Int) -&gt; <span class="built_in">CGPoint</span> &#123;</div><div class="line">		let center = <span class="built_in">CGPoint</span>(x:view.bounds.width/<span class="number">2.0</span>, y:view.bounds.height/<span class="number">2.0</span>)</div><div class="line">		let increaseAngle = Double.pi * <span class="number">2.0</span> * Double(index) / Double(numberOfDrawer);</div><div class="line">		let radius: Double = sqrt(pow(Double(point.x) - Double(center.x), <span class="number">2</span>) + pow(Double(point.y) - Double(center.y), <span class="number">2</span>))</div><div class="line">		let angle: Double = getAngle(startPoint: center, endPoint: point) + increaseAngle</div><div class="line">		<span class="keyword">return</span> <span class="built_in">CGPoint</span>(x: cos(angle) * radius + Double(center.x), y: sin(angle)*radius + Double(center.y))</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	func getAngle(startPoint:<span class="built_in">CGPoint</span>, endPoint:<span class="built_in">CGPoint</span>) -&gt; Double &#123;</div><div class="line">		let y = Double(endPoint.y - startPoint.y)</div><div class="line">		let x = Double(endPoint.x - startPoint.x)</div><div class="line">		let length = sqrt(y*y + x*x)</div><div class="line">		var rads = asin(y/length)</div><div class="line">		</div><div class="line">		<span class="keyword">if</span> x &lt; <span class="number">0</span> &#123;</div><div class="line">			rads = (Double.pi - rads)</div><div class="line">		&#125;</div><div class="line">		<span class="keyword">return</span> rads</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2017/11/27/2017-12-08/" data-id="cjbqj4epp0006n462bfmjsd12" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Alamfire/">Alamfire</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Moya/">Moya</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/绘图/">绘图</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-2017-02-15" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/02/15/2017-02-15/" class="article-date">
+  <time datetime="2017-02-15T16:04:29.000Z" itemprop="datePublished">2017-02-15</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/UI/">UI</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/02/15/2017-02-15/">Autolayout和Masrony的使用</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>#iOS界面布局</p>
+<p>目前来说iOS目前几种主流的UI布局：</p>
+<ul>
+<li>Frame布局</li>
+<li>AutoLayout <ul>
+<li>使用代码实现AutoLayout</li>
+<li>使用xib或者StoryBoard<br>在代码可读性上 frame &gt; 使用代码实现AutoLayout &gt; 使用xib或者StoryBoard<br>在开发效率上 使用xib或者StoryBoard &gt; 使用代码实现AutoLayout &gt; Frame布局</li>
+</ul>
+</li>
+</ul>
+<p><code>AutoLayout</code>是通常是通过定义一系列的约束（constrains）来进行定的。和Frame定位一样，它同样需要你提供位置和尺寸信息，但是和Frame不同的是，它不是让你直接提供x，y，width，height，而是通过你给的约束来推断出相应的尺寸和位置。</p>
+<h2 id="AutoLayout本质"><a href="#AutoLayout本质" class="headerlink" title="AutoLayout本质"></a>AutoLayout本质</h2><p>一次函数：</p>
+<blockquote>
+<p>y = ax + b</p>
+<p>item1.attribute1 = multiplier × item2.attribute2 + constant</p>
+</blockquote>
+<p>看一段原生的代码实现AutoLayout（NSLayoutConstraint）</p>
+<p>VFL是这么写的：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">NSDictionary</span> *viewsDictionary = [<span class="built_in">NSDictionary</span> dictionaryWithObjectsAndKeys:label1,<span class="string">@"label1"</span>,label2,<span class="string">@"label2"</span>,label3,<span class="string">@"label3"</span>,label4,<span class="string">@"label4"</span>, <span class="literal">nil</span>];</div><div class="line"></div><div class="line"><span class="built_in">NSDictionary</span> *metrics = [<span class="built_in">NSDictionary</span> dictionaryWithObject:@(<span class="number">88</span>) forKey:<span class="string">@"labelHeight"</span>];</div><div class="line"></div><div class="line"><span class="built_in">NSArray</span> *constraints = [<span class="built_in">NSLayoutConstraint</span> constraintsWithVisualFormat:<span class="string">@"V:|[label1(labelHeight)]-[label2(labelHeight)]-[label3(labelHeight)]-[label4(labelHeight)]-(&gt;=10)-|"</span> options:<span class="built_in">NSLayoutFormatAlignAllLeft</span> metrics:metrics views:viewsDictionary];</div><div class="line"></div><div class="line">[view addConstraints:constraints];</div></pre></td></tr></table></figure>
+<p>还有一种写法：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">view.translatesAutoresizingMaskIntoConstraints = <span class="literal">NO</span>;</div><div class="line"><span class="built_in">NSLayoutConstraint</span> * constraint = [<span class="built_in">NSLayoutConstraint</span></div><div class="line">                                       constraintWithItem:view             </div><div class="line">                                       attribute:<span class="built_in">NSLayoutAttributeTop</span>          </div><div class="line">                                       relatedBy:<span class="built_in">NSLayoutRelationEqual</span>          </div><div class="line">                                       toItem:view                       </div><div class="line">                                       attribute:<span class="built_in">NSLayoutAttributeTop</span>           </div><div class="line">                                       multiplier:<span class="number">1.0</span>                      </div><div class="line">                                       constant:<span class="number">10</span>];                            </div><div class="line">[view addConstraint:constraint];</div></pre></td></tr></table></figure>
+<p>苹果好像也发现这样写有点尴尬，于是在iOS8和iOS9中对autolayout的api进行改动：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//iOS8</span></div><div class="line">[<span class="built_in">NSLayoutConstraint</span> constraintWithItem:view1 attribute:<span class="built_in">NSLayoutAttributeCenterX</span> relatedBy:<span class="built_in">NSLayoutRelationEqual</span> toItem:view2 attribute:<span class="built_in">NSLayoutAttributeCenterX</span> multiplier:<span class="number">1</span> constant:<span class="number">10</span>];</div><div class="line"></div><div class="line"><span class="comment">//iOS9</span></div><div class="line">view.translatesAutoresizingMaskIntoConstraints = <span class="literal">NO</span>;</div><div class="line">[view.widthAnchor constraintEqualToConstant:<span class="number">100</span>];</div><div class="line">[view.heightAnchor constraintEqualToConstant:<span class="number">100</span>];</div><div class="line">[view.centerXAnchor constraintEqualToAnchor:view1.centerXAnchor];</div><div class="line">[view.centerYAnchor constraintEqualToAnchor:view1.centerYAnchor];</div></pre></td></tr></table></figure>
+<p>一个view的位置确定，正常情况下需要来自内部或者外部的4条约束才能确定其位置。所以使用原生代码实现起来太过繁琐，所以为了解决这个问题，将NSLayoutConstraint简化封装使用就非常有必要了，开源项目中有很多项目已经很成熟了，比如Masonry和purelayout等，下面简单介绍Masonry。</p>
+<h2 id="Masonry的介绍"><a href="#Masonry的介绍" class="headerlink" title="Masonry的介绍"></a>Masonry的介绍</h2><p>Masonry是iOS在控件布局中经常使用的一个轻量级框架，Masonry让NSLayoutConstraint使用起来更为简洁。Masonry简化了NSLayoutConstraint的使用方式，让我们可以以链式的方式为我们的控件指定约束。</p>
+<p><strong>使用Masonry完成上面的代码</strong></p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">[view mas_makeConstraints:^(MASConstraintMaker *make) &#123;</div><div class="line">    make.top.equalTo(@(<span class="number">10</span>));</div><div class="line">&#125;];</div></pre></td></tr></table></figure>
+<p>当然一条约束什么都干不了,完成一个View的布局，至少有4个来自内部或者外部的约束，比如：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">[view mas_makeConstraints:^(MASConstraintMaker *make) &#123;</div><div class="line">    make.top.equalTo(@(<span class="number">10</span>));</div><div class="line">    make.left.equalTo(@(<span class="number">10</span>));</div><div class="line">    make.bottom.equalTo(@(<span class="number">-10</span>));</div><div class="line">    make.right.equalTo(@(<span class="number">-10</span>));</div><div class="line">&#125;];</div></pre></td></tr></table></figure>
+<p>Masonry最重要的4个方法</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> *  Finds the closest common superview between this view and another view</div><div class="line"> *</div><div class="line"> *  @param  view    other view</div><div class="line"> *</div><div class="line"> *  @return returns nil if common superview could not be found</div><div class="line"> */</div><div class="line">- (<span class="keyword">instancetype</span>)mas_closestCommonSuperview:(MAS_VIEW *)view;</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> *  Creates a MASConstraintMaker with the callee view.</div><div class="line"> *  Any constraints defined are added to the view or the appropriate superview once the block has finished executing</div><div class="line"> *</div><div class="line"> *  @param block scope within which you can build up the constraints which you wish to apply to the view.</div><div class="line"> *</div><div class="line"> *  @return Array of created MASConstraints</div><div class="line"> */</div><div class="line">- (<span class="built_in">NSArray</span> *)mas_makeConstraints:(MASConstraintMakerConfigBlock)block;</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> *  Creates a MASConstraintMaker with the callee view.</div><div class="line"> *  Any constraints defined are added to the view or the appropriate superview once the block has finished executing.</div><div class="line"> *  If an existing constraint exists then it will be updated instead.</div><div class="line"> *</div><div class="line"> *  @param block scope within which you can build up the constraints which you wish to apply to the view.</div><div class="line"> *</div><div class="line"> *  @return Array of created/updated MASConstraints</div><div class="line"> */</div><div class="line">- (<span class="built_in">NSArray</span> *)mas_updateConstraints:(MASConstraintMakerConfigBlock)block;</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> *  Creates a MASConstraintMaker with the callee view.</div><div class="line"> *  Any constraints defined are added to the view or the appropriate superview once the block has finished executing.</div><div class="line"> *  All constraints previously installed for the view will be removed.</div><div class="line"> *</div><div class="line"> *  @param block scope within which you can build up the constraints which you wish to apply to the view.</div><div class="line"> *</div><div class="line"> *  @return Array of created/updated MASConstraints</div><div class="line"> */</div><div class="line">- (<span class="built_in">NSArray</span> *)mas_remakeConstraints:(MASConstraintMakerConfigBlock)block;</div></pre></td></tr></table></figure>
+<h3 id="MASViewConstraint的对象链式调用"><a href="#MASViewConstraint的对象链式调用" class="headerlink" title="MASViewConstraint的对象链式调用"></a>MASViewConstraint的对象链式调用</h3><p>如何实现链式调用</p>
+<p>Masonry中大量的使用了链式调用的，比如</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">view.top.left.equalTo(superView).offset(<span class="number">10</span>);</div></pre></td></tr></table></figure>
+<p>上面的这种方式就是链式调用，而且像equalTo(superView)这种形式也不是Objective-C中函数调用的方式，在Objective-C中是通过[]来调用函数的，而此处使用了()。接下来讲分析这种链式的调用是如何实现的。</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">class</span> ClassB;</div><div class="line">interface ClassA : <span class="built_in">NSObject</span></div><div class="line"></div><div class="line"><span class="comment">// 1. 定义一些 block 属性</span></div><div class="line">property(<span class="keyword">nonatomic</span>, <span class="keyword">readonly</span>) ClassA *(^aaa)(<span class="built_in">BOOL</span> enable);</div><div class="line">property(<span class="keyword">nonatomic</span>, <span class="keyword">readonly</span>) ClassA *(^bbb)(<span class="built_in">NSString</span>* str);</div><div class="line"><span class="keyword">@property</span>(<span class="keyword">nonatomic</span>, <span class="keyword">readonly</span>) ClassB *(^ccc)(<span class="built_in">NSString</span>* str);</div><div class="line"></div><div class="line">@implement ClassA</div><div class="line"></div><div class="line"><span class="comment">// 2. 实现这些 block 方法，block 返回值类型很关键，影响着下一个链式</span></div><div class="line">- (ClassA *(^)(<span class="built_in">BOOL</span>))aaa</div><div class="line">&#123;</div><div class="line">    <span class="keyword">return</span> ^(<span class="built_in">BOOL</span> enable) &#123;</div><div class="line">        <span class="comment">//code</span></div><div class="line">        <span class="keyword">if</span> (enable) &#123;</div><div class="line">            <span class="built_in">NSLog</span>(<span class="string">@"ClassA yes"</span>);</div><div class="line">        &#125; <span class="keyword">else</span> &#123;</div><div class="line">            <span class="built_in">NSLog</span>(<span class="string">@"ClassA no"</span>);</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">self</span>;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line">- (ClassA *(^)(<span class="built_in">NSString</span> *))bbb</div><div class="line">&#123;</div><div class="line">    <span class="keyword">return</span> ^(<span class="built_in">NSString</span> *str)) &#123;</div><div class="line">        <span class="comment">//code</span></div><div class="line">        <span class="built_in">NSLog</span>(<span class="string">@"%@"</span>, str);</div><div class="line">        <span class="keyword">return</span> <span class="keyword">self</span>;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"></div><div class="line"><span class="comment">// 这里返回了ClassB的一个实例，于是后面就可以继续链式 ClassB 的 block 方法</span></div><div class="line"><span class="comment">// 见下面例子 .ccc(@"Objective-C").ddd(NO)</span></div><div class="line">- (ClassB * (^)(<span class="built_in">NSString</span> *))ccc</div><div class="line">&#123;</div><div class="line">    <span class="keyword">return</span> ^(<span class="built_in">NSString</span> *str) &#123;</div><div class="line">        <span class="comment">//code</span></div><div class="line">        <span class="built_in">NSLog</span>(<span class="string">@"%@"</span>, str);</div><div class="line">        ClassB* b = [[ClassB alloc] initWithString:ccc];</div><div class="line">        <span class="keyword">return</span> b;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">//------------------------------------------</span></div><div class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">ClassB</span> : <span class="title">NSObject</span></span></div><div class="line"><span class="keyword">@property</span>(<span class="keyword">nonatomic</span>, <span class="keyword">readonly</span>) ClassB *(^ddd)(<span class="built_in">BOOL</span> enable);</div><div class="line"></div><div class="line">- (<span class="keyword">id</span>)initWithString:(<span class="built_in">NSString</span> *)str;</div><div class="line"></div><div class="line">@implement ClassB</div><div class="line"></div><div class="line">- (ClassB *(^)(<span class="built_in">BOOL</span>))ddd</div><div class="line">&#123;</div><div class="line">    <span class="keyword">return</span> ^(<span class="built_in">BOOL</span> enable) &#123;</div><div class="line">        <span class="comment">//code</span></div><div class="line">        <span class="keyword">if</span> (enable) &#123;</div><div class="line">            <span class="built_in">NSLog</span>(<span class="string">@"ClassB yes"</span>);</div><div class="line">        &#125; <span class="keyword">else</span> &#123;</div><div class="line">            <span class="built_in">NSLog</span>(<span class="string">@"ClassB no"</span>);</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">self</span>;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">// 最后我们可以这样做</span></div><div class="line"><span class="keyword">id</span> a = [ClassA new];</div><div class="line">a.aaa(<span class="literal">YES</span>).bbb(<span class="string">@"HelloWorld!"</span>).ccc(<span class="string">@"Objective-C"</span>).ddd(<span class="literal">NO</span>)</div></pre></td></tr></table></figure>
+<p>offset(10)这种调用方式是如何实现的呢？</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">- (MASConstraint * (^)(<span class="built_in">CGFloat</span>))offset &#123;</div><div class="line">    <span class="keyword">return</span> ^<span class="keyword">id</span>(<span class="built_in">CGFloat</span> offset)&#123;</div><div class="line">        <span class="keyword">self</span>.offset = offset;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">self</span>;</div><div class="line">    &#125;;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>不难发现，offset是一个getter方法的名，offset函数的返回值是一个匿名Block, 也就是offset后边的()。这个匿名闭包有一个CGFloat的参数，为了支持链式调用该匿名闭包返回一个MASConstraint的对象。</p>
+<p>优化UITableViewCell高度计算的那些事:</p>
+<p><a href="https://github.com/forkingdog/UITableView-FDTemplateLayoutCell" target="_blank" rel="external">https://github.com/forkingdog/UITableView-FDTemplateLayoutCell</a></p>
+<p><a href="http://blog.sunnyxx.com/2015/05/17/cell-height-calculation/" target="_blank" rel="external">http://blog.sunnyxx.com/2015/05/17/cell-height-calculation/</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2017/02/15/2017-02-15/" data-id="cjbqj4epg0001n462yth2cm21" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/autolayout/">autolayout</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-2016-11-01" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/11/01/2016-11-01/" class="article-date">
+  <time datetime="2016-11-01T16:04:29.000Z" itemprop="datePublished">2016-11-01</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/其他/">其他</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/11/01/2016-11-01/">MarkDown语法在iOS工程师角度的一些运用</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p>这里一篇总结的挺全的，可以看看<br><a href="http://www.appinn.com/markdown/" target="_blank" rel="external">http://www.appinn.com/markdown/</a></p>
+</blockquote>
+<p><strong>推荐下载使用开源的markdown工具MacDown</strong></p>
+<ul>
+<li>马克飞象的Markdown，查看示例</li>
+<li>Swift的markdown运用</li>
+<li>项目文档化工具 Jazzy</li>
+<li>HEXO 博客引擎</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2016/11/01/2016-11-01/" data-id="cjbqj4epb0000n462s23hnq2e" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/markdown/">markdown</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/UI/">UI</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/share/">share</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/其他/">其他</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Alamfire/">Alamfire</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Moya/">Moya</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NSLogger/">NSLogger</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SafeKit/">SafeKit</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Swift/">Swift</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/autolayout/">autolayout</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hitTest/">hitTest</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/m34/">m34</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/markdown/">markdown</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nextResponder/">nextResponder</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/responder-chain/">responder chain</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/混淆/">混淆</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/绘图/">绘图</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Alamfire/" style="font-size: 10px;">Alamfire</a> <a href="/tags/Moya/" style="font-size: 10px;">Moya</a> <a href="/tags/NSLogger/" style="font-size: 10px;">NSLogger</a> <a href="/tags/SafeKit/" style="font-size: 10px;">SafeKit</a> <a href="/tags/Swift/" style="font-size: 10px;">Swift</a> <a href="/tags/autolayout/" style="font-size: 10px;">autolayout</a> <a href="/tags/hitTest/" style="font-size: 10px;">hitTest</a> <a href="/tags/m34/" style="font-size: 10px;">m34</a> <a href="/tags/markdown/" style="font-size: 10px;">markdown</a> <a href="/tags/nextResponder/" style="font-size: 10px;">nextResponder</a> <a href="/tags/responder-chain/" style="font-size: 10px;">responder chain</a> <a href="/tags/混淆/" style="font-size: 10px;">混淆</a> <a href="/tags/绘图/" style="font-size: 10px;">绘图</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">February 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2017/12/28/2017-12-28/">第7期博客（查违章日志系统的接入NSLogger）</a>
+          </li>
+        
+          <li>
+            <a href="/2017/12/22/2017-12-22/">第6期博客（响应链）</a>
+          </li>
+        
+          <li>
+            <a href="/2017/11/27/2017-11-27/">第三期博客（SafeKit，混淆，m34）</a>
+          </li>
+        
+          <li>
+            <a href="/2017/11/27/2017-12-01/">第4期博客（混编尝试）</a>
+          </li>
+        
+          <li>
+            <a href="/2017/11/27/2017-12-08/">第5期博客（Moya &amp; 绘图）</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2017 John Doe<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+  </div>
+</body>
+</html>

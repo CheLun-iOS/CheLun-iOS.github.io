@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Autolayout和Masrony的使用 | 车轮互联</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="#iOS界面布局
+目前来说iOS目前几种主流的UI布局：
+
+Frame布局
+AutoLayout 
+使用代码实现AutoLayout
+使用xib或者StoryBoard在代码可读性上 frame &amp;gt; 使用代码实现AutoLayout &amp;gt; 使用xib或者StoryBoard在开发效率上 使用xib或者StoryBoard &amp;gt; 使用代码实现AutoLayout &amp;gt; Frame布">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Autolayout和Masrony的使用">
+<meta property="og:url" content="http://yoursite.com/2017/02/15/2017-02-15/index.html">
+<meta property="og:site_name" content="车轮互联">
+<meta property="og:description" content="#iOS界面布局
+目前来说iOS目前几种主流的UI布局：
+
+Frame布局
+AutoLayout 
+使用代码实现AutoLayout
+使用xib或者StoryBoard在代码可读性上 frame &amp;gt; 使用代码实现AutoLayout &amp;gt; 使用xib或者StoryBoard在开发效率上 使用xib或者StoryBoard &amp;gt; 使用代码实现AutoLayout &amp;gt; Frame布">
+<meta property="og:updated_time" content="2017-12-28T13:32:24.697Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Autolayout和Masrony的使用">
+<meta name="twitter:description" content="#iOS界面布局
+目前来说iOS目前几种主流的UI布局：
+
+Frame布局
+AutoLayout 
+使用代码实现AutoLayout
+使用xib或者StoryBoard在代码可读性上 frame &amp;gt; 使用代码实现AutoLayout &amp;gt; 使用xib或者StoryBoard在开发效率上 使用xib或者StoryBoard &amp;gt; 使用代码实现AutoLayout &amp;gt; Frame布">
+  
+    <link rel="alternate" href="/atom.xml" title="车轮互联" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">车轮互联</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">有车就有车轮</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-2017-02-15" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/02/15/2017-02-15/" class="article-date">
+  <time datetime="2017-02-15T16:04:29.000Z" itemprop="datePublished">2017-02-15</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/UI/">UI</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Autolayout和Masrony的使用
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>#iOS界面布局</p>
+<p>目前来说iOS目前几种主流的UI布局：</p>
+<ul>
+<li>Frame布局</li>
+<li>AutoLayout <ul>
+<li>使用代码实现AutoLayout</li>
+<li>使用xib或者StoryBoard<br>在代码可读性上 frame &gt; 使用代码实现AutoLayout &gt; 使用xib或者StoryBoard<br>在开发效率上 使用xib或者StoryBoard &gt; 使用代码实现AutoLayout &gt; Frame布局</li>
+</ul>
+</li>
+</ul>
+<p><code>AutoLayout</code>是通常是通过定义一系列的约束（constrains）来进行定的。和Frame定位一样，它同样需要你提供位置和尺寸信息，但是和Frame不同的是，它不是让你直接提供x，y，width，height，而是通过你给的约束来推断出相应的尺寸和位置。</p>
+<h2 id="AutoLayout本质"><a href="#AutoLayout本质" class="headerlink" title="AutoLayout本质"></a>AutoLayout本质</h2><p>一次函数：</p>
+<blockquote>
+<p>y = ax + b</p>
+<p>item1.attribute1 = multiplier × item2.attribute2 + constant</p>
+</blockquote>
+<p>看一段原生的代码实现AutoLayout（NSLayoutConstraint）</p>
+<p>VFL是这么写的：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">NSDictionary</span> *viewsDictionary = [<span class="built_in">NSDictionary</span> dictionaryWithObjectsAndKeys:label1,<span class="string">@"label1"</span>,label2,<span class="string">@"label2"</span>,label3,<span class="string">@"label3"</span>,label4,<span class="string">@"label4"</span>, <span class="literal">nil</span>];</div><div class="line"></div><div class="line"><span class="built_in">NSDictionary</span> *metrics = [<span class="built_in">NSDictionary</span> dictionaryWithObject:@(<span class="number">88</span>) forKey:<span class="string">@"labelHeight"</span>];</div><div class="line"></div><div class="line"><span class="built_in">NSArray</span> *constraints = [<span class="built_in">NSLayoutConstraint</span> constraintsWithVisualFormat:<span class="string">@"V:|[label1(labelHeight)]-[label2(labelHeight)]-[label3(labelHeight)]-[label4(labelHeight)]-(&gt;=10)-|"</span> options:<span class="built_in">NSLayoutFormatAlignAllLeft</span> metrics:metrics views:viewsDictionary];</div><div class="line"></div><div class="line">[view addConstraints:constraints];</div></pre></td></tr></table></figure>
+<p>还有一种写法：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">view.translatesAutoresizingMaskIntoConstraints = <span class="literal">NO</span>;</div><div class="line"><span class="built_in">NSLayoutConstraint</span> * constraint = [<span class="built_in">NSLayoutConstraint</span></div><div class="line">                                       constraintWithItem:view             </div><div class="line">                                       attribute:<span class="built_in">NSLayoutAttributeTop</span>          </div><div class="line">                                       relatedBy:<span class="built_in">NSLayoutRelationEqual</span>          </div><div class="line">                                       toItem:view                       </div><div class="line">                                       attribute:<span class="built_in">NSLayoutAttributeTop</span>           </div><div class="line">                                       multiplier:<span class="number">1.0</span>                      </div><div class="line">                                       constant:<span class="number">10</span>];                            </div><div class="line">[view addConstraint:constraint];</div></pre></td></tr></table></figure>
+<p>苹果好像也发现这样写有点尴尬，于是在iOS8和iOS9中对autolayout的api进行改动：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//iOS8</span></div><div class="line">[<span class="built_in">NSLayoutConstraint</span> constraintWithItem:view1 attribute:<span class="built_in">NSLayoutAttributeCenterX</span> relatedBy:<span class="built_in">NSLayoutRelationEqual</span> toItem:view2 attribute:<span class="built_in">NSLayoutAttributeCenterX</span> multiplier:<span class="number">1</span> constant:<span class="number">10</span>];</div><div class="line"></div><div class="line"><span class="comment">//iOS9</span></div><div class="line">view.translatesAutoresizingMaskIntoConstraints = <span class="literal">NO</span>;</div><div class="line">[view.widthAnchor constraintEqualToConstant:<span class="number">100</span>];</div><div class="line">[view.heightAnchor constraintEqualToConstant:<span class="number">100</span>];</div><div class="line">[view.centerXAnchor constraintEqualToAnchor:view1.centerXAnchor];</div><div class="line">[view.centerYAnchor constraintEqualToAnchor:view1.centerYAnchor];</div></pre></td></tr></table></figure>
+<p>一个view的位置确定，正常情况下需要来自内部或者外部的4条约束才能确定其位置。所以使用原生代码实现起来太过繁琐，所以为了解决这个问题，将NSLayoutConstraint简化封装使用就非常有必要了，开源项目中有很多项目已经很成熟了，比如Masonry和purelayout等，下面简单介绍Masonry。</p>
+<h2 id="Masonry的介绍"><a href="#Masonry的介绍" class="headerlink" title="Masonry的介绍"></a>Masonry的介绍</h2><p>Masonry是iOS在控件布局中经常使用的一个轻量级框架，Masonry让NSLayoutConstraint使用起来更为简洁。Masonry简化了NSLayoutConstraint的使用方式，让我们可以以链式的方式为我们的控件指定约束。</p>
+<p><strong>使用Masonry完成上面的代码</strong></p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">[view mas_makeConstraints:^(MASConstraintMaker *make) &#123;</div><div class="line">    make.top.equalTo(@(<span class="number">10</span>));</div><div class="line">&#125;];</div></pre></td></tr></table></figure>
+<p>当然一条约束什么都干不了,完成一个View的布局，至少有4个来自内部或者外部的约束，比如：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">[view mas_makeConstraints:^(MASConstraintMaker *make) &#123;</div><div class="line">    make.top.equalTo(@(<span class="number">10</span>));</div><div class="line">    make.left.equalTo(@(<span class="number">10</span>));</div><div class="line">    make.bottom.equalTo(@(<span class="number">-10</span>));</div><div class="line">    make.right.equalTo(@(<span class="number">-10</span>));</div><div class="line">&#125;];</div></pre></td></tr></table></figure>
+<p>Masonry最重要的4个方法</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> *  Finds the closest common superview between this view and another view</div><div class="line"> *</div><div class="line"> *  @param  view    other view</div><div class="line"> *</div><div class="line"> *  @return returns nil if common superview could not be found</div><div class="line"> */</div><div class="line">- (<span class="keyword">instancetype</span>)mas_closestCommonSuperview:(MAS_VIEW *)view;</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> *  Creates a MASConstraintMaker with the callee view.</div><div class="line"> *  Any constraints defined are added to the view or the appropriate superview once the block has finished executing</div><div class="line"> *</div><div class="line"> *  @param block scope within which you can build up the constraints which you wish to apply to the view.</div><div class="line"> *</div><div class="line"> *  @return Array of created MASConstraints</div><div class="line"> */</div><div class="line">- (<span class="built_in">NSArray</span> *)mas_makeConstraints:(MASConstraintMakerConfigBlock)block;</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> *  Creates a MASConstraintMaker with the callee view.</div><div class="line"> *  Any constraints defined are added to the view or the appropriate superview once the block has finished executing.</div><div class="line"> *  If an existing constraint exists then it will be updated instead.</div><div class="line"> *</div><div class="line"> *  @param block scope within which you can build up the constraints which you wish to apply to the view.</div><div class="line"> *</div><div class="line"> *  @return Array of created/updated MASConstraints</div><div class="line"> */</div><div class="line">- (<span class="built_in">NSArray</span> *)mas_updateConstraints:(MASConstraintMakerConfigBlock)block;</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> *  Creates a MASConstraintMaker with the callee view.</div><div class="line"> *  Any constraints defined are added to the view or the appropriate superview once the block has finished executing.</div><div class="line"> *  All constraints previously installed for the view will be removed.</div><div class="line"> *</div><div class="line"> *  @param block scope within which you can build up the constraints which you wish to apply to the view.</div><div class="line"> *</div><div class="line"> *  @return Array of created/updated MASConstraints</div><div class="line"> */</div><div class="line">- (<span class="built_in">NSArray</span> *)mas_remakeConstraints:(MASConstraintMakerConfigBlock)block;</div></pre></td></tr></table></figure>
+<h3 id="MASViewConstraint的对象链式调用"><a href="#MASViewConstraint的对象链式调用" class="headerlink" title="MASViewConstraint的对象链式调用"></a>MASViewConstraint的对象链式调用</h3><p>如何实现链式调用</p>
+<p>Masonry中大量的使用了链式调用的，比如</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">view.top.left.equalTo(superView).offset(<span class="number">10</span>);</div></pre></td></tr></table></figure>
+<p>上面的这种方式就是链式调用，而且像equalTo(superView)这种形式也不是Objective-C中函数调用的方式，在Objective-C中是通过[]来调用函数的，而此处使用了()。接下来讲分析这种链式的调用是如何实现的。</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">class</span> ClassB;</div><div class="line">interface ClassA : <span class="built_in">NSObject</span></div><div class="line"></div><div class="line"><span class="comment">// 1. 定义一些 block 属性</span></div><div class="line">property(<span class="keyword">nonatomic</span>, <span class="keyword">readonly</span>) ClassA *(^aaa)(<span class="built_in">BOOL</span> enable);</div><div class="line">property(<span class="keyword">nonatomic</span>, <span class="keyword">readonly</span>) ClassA *(^bbb)(<span class="built_in">NSString</span>* str);</div><div class="line"><span class="keyword">@property</span>(<span class="keyword">nonatomic</span>, <span class="keyword">readonly</span>) ClassB *(^ccc)(<span class="built_in">NSString</span>* str);</div><div class="line"></div><div class="line">@implement ClassA</div><div class="line"></div><div class="line"><span class="comment">// 2. 实现这些 block 方法，block 返回值类型很关键，影响着下一个链式</span></div><div class="line">- (ClassA *(^)(<span class="built_in">BOOL</span>))aaa</div><div class="line">&#123;</div><div class="line">    <span class="keyword">return</span> ^(<span class="built_in">BOOL</span> enable) &#123;</div><div class="line">        <span class="comment">//code</span></div><div class="line">        <span class="keyword">if</span> (enable) &#123;</div><div class="line">            <span class="built_in">NSLog</span>(<span class="string">@"ClassA yes"</span>);</div><div class="line">        &#125; <span class="keyword">else</span> &#123;</div><div class="line">            <span class="built_in">NSLog</span>(<span class="string">@"ClassA no"</span>);</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">self</span>;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line">- (ClassA *(^)(<span class="built_in">NSString</span> *))bbb</div><div class="line">&#123;</div><div class="line">    <span class="keyword">return</span> ^(<span class="built_in">NSString</span> *str)) &#123;</div><div class="line">        <span class="comment">//code</span></div><div class="line">        <span class="built_in">NSLog</span>(<span class="string">@"%@"</span>, str);</div><div class="line">        <span class="keyword">return</span> <span class="keyword">self</span>;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"></div><div class="line"><span class="comment">// 这里返回了ClassB的一个实例，于是后面就可以继续链式 ClassB 的 block 方法</span></div><div class="line"><span class="comment">// 见下面例子 .ccc(@"Objective-C").ddd(NO)</span></div><div class="line">- (ClassB * (^)(<span class="built_in">NSString</span> *))ccc</div><div class="line">&#123;</div><div class="line">    <span class="keyword">return</span> ^(<span class="built_in">NSString</span> *str) &#123;</div><div class="line">        <span class="comment">//code</span></div><div class="line">        <span class="built_in">NSLog</span>(<span class="string">@"%@"</span>, str);</div><div class="line">        ClassB* b = [[ClassB alloc] initWithString:ccc];</div><div class="line">        <span class="keyword">return</span> b;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">//------------------------------------------</span></div><div class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">ClassB</span> : <span class="title">NSObject</span></span></div><div class="line"><span class="keyword">@property</span>(<span class="keyword">nonatomic</span>, <span class="keyword">readonly</span>) ClassB *(^ddd)(<span class="built_in">BOOL</span> enable);</div><div class="line"></div><div class="line">- (<span class="keyword">id</span>)initWithString:(<span class="built_in">NSString</span> *)str;</div><div class="line"></div><div class="line">@implement ClassB</div><div class="line"></div><div class="line">- (ClassB *(^)(<span class="built_in">BOOL</span>))ddd</div><div class="line">&#123;</div><div class="line">    <span class="keyword">return</span> ^(<span class="built_in">BOOL</span> enable) &#123;</div><div class="line">        <span class="comment">//code</span></div><div class="line">        <span class="keyword">if</span> (enable) &#123;</div><div class="line">            <span class="built_in">NSLog</span>(<span class="string">@"ClassB yes"</span>);</div><div class="line">        &#125; <span class="keyword">else</span> &#123;</div><div class="line">            <span class="built_in">NSLog</span>(<span class="string">@"ClassB no"</span>);</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">self</span>;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">// 最后我们可以这样做</span></div><div class="line"><span class="keyword">id</span> a = [ClassA new];</div><div class="line">a.aaa(<span class="literal">YES</span>).bbb(<span class="string">@"HelloWorld!"</span>).ccc(<span class="string">@"Objective-C"</span>).ddd(<span class="literal">NO</span>)</div></pre></td></tr></table></figure>
+<p>offset(10)这种调用方式是如何实现的呢？</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">- (MASConstraint * (^)(<span class="built_in">CGFloat</span>))offset &#123;</div><div class="line">    <span class="keyword">return</span> ^<span class="keyword">id</span>(<span class="built_in">CGFloat</span> offset)&#123;</div><div class="line">        <span class="keyword">self</span>.offset = offset;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">self</span>;</div><div class="line">    &#125;;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>不难发现，offset是一个getter方法的名，offset函数的返回值是一个匿名Block, 也就是offset后边的()。这个匿名闭包有一个CGFloat的参数，为了支持链式调用该匿名闭包返回一个MASConstraint的对象。</p>
+<p>优化UITableViewCell高度计算的那些事:</p>
+<p><a href="https://github.com/forkingdog/UITableView-FDTemplateLayoutCell" target="_blank" rel="external">https://github.com/forkingdog/UITableView-FDTemplateLayoutCell</a></p>
+<p><a href="http://blog.sunnyxx.com/2015/05/17/cell-height-calculation/" target="_blank" rel="external">http://blog.sunnyxx.com/2015/05/17/cell-height-calculation/</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2017/02/15/2017-02-15/" data-id="cjbqj4epg0001n462yth2cm21" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/autolayout/">autolayout</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/11/27/2017-12-08/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          第5期博客（Moya &amp; 绘图）
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2016/11/01/2016-11-01/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">MarkDown语法在iOS工程师角度的一些运用</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/UI/">UI</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/share/">share</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/其他/">其他</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Alamfire/">Alamfire</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Moya/">Moya</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NSLogger/">NSLogger</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SafeKit/">SafeKit</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Swift/">Swift</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/autolayout/">autolayout</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hitTest/">hitTest</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/m34/">m34</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/markdown/">markdown</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nextResponder/">nextResponder</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/responder-chain/">responder chain</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/混淆/">混淆</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/绘图/">绘图</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Alamfire/" style="font-size: 10px;">Alamfire</a> <a href="/tags/Moya/" style="font-size: 10px;">Moya</a> <a href="/tags/NSLogger/" style="font-size: 10px;">NSLogger</a> <a href="/tags/SafeKit/" style="font-size: 10px;">SafeKit</a> <a href="/tags/Swift/" style="font-size: 10px;">Swift</a> <a href="/tags/autolayout/" style="font-size: 10px;">autolayout</a> <a href="/tags/hitTest/" style="font-size: 10px;">hitTest</a> <a href="/tags/m34/" style="font-size: 10px;">m34</a> <a href="/tags/markdown/" style="font-size: 10px;">markdown</a> <a href="/tags/nextResponder/" style="font-size: 10px;">nextResponder</a> <a href="/tags/responder-chain/" style="font-size: 10px;">responder chain</a> <a href="/tags/混淆/" style="font-size: 10px;">混淆</a> <a href="/tags/绘图/" style="font-size: 10px;">绘图</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">February 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2017/12/28/2017-12-28/">第7期博客（查违章日志系统的接入NSLogger）</a>
+          </li>
+        
+          <li>
+            <a href="/2017/12/22/2017-12-22/">第6期博客（响应链）</a>
+          </li>
+        
+          <li>
+            <a href="/2017/11/27/2017-11-27/">第三期博客（SafeKit，混淆，m34）</a>
+          </li>
+        
+          <li>
+            <a href="/2017/11/27/2017-12-01/">第4期博客（混编尝试）</a>
+          </li>
+        
+          <li>
+            <a href="/2017/11/27/2017-12-08/">第5期博客（Moya &amp; 绘图）</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2017 John Doe<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+  </div>
+</body>
+</html>
